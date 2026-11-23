@@ -72,8 +72,9 @@
   .trust b{font-family:var(--ff-d);font-size:17px;color:#fff;display:block}
   .trust span{font-size:12.5px;color:#aab2c9}
   .portrait{position:relative}
-  .frame{border-radius:22px;overflow:hidden;box-shadow:0 30px 60px rgba(10,16,34,.45);border:1px solid rgba(255,255,255,.12);aspect-ratio:1/1;background:#0d1530}
-  .frame img{width:100%;height:100%;object-fit:cover}
+  .frame{position:relative;border-radius:22px;overflow:hidden;box-shadow:0 30px 60px rgba(10,16,34,.45);border:1px solid rgba(255,255,255,.12);aspect-ratio:1/1;background:#0d1530}
+  .frame img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 1.2s ease}
+  .frame img.on{opacity:1}
   .cap{position:absolute;left:18px;bottom:18px;right:18px;background:rgba(20,29,54,.72);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.14);border-radius:14px;padding:12px 16px}
   .cap b{font-family:var(--ff-d);color:#fff;font-size:15px;display:block}.cap span{color:#c7cee0;font-size:12px}
 
@@ -340,7 +341,7 @@
       </div>
     </div>
     <figure class="portrait" style="margin:0">
-      <div class="frame"><img src="assets/img/telehealth1.jpg" alt="Clinician during a secure telehealth visit" loading="eager"></div>
+      <div class="frame" id="heroReel"></div>
       <figcaption class="cap"><b>A new season of care</b><span>Grounded, personal, and unhurried</span></figcaption>
     </figure>
   </div>
@@ -679,6 +680,15 @@ there's grace enough to help you heal, and hope to show you how.</p>
   document.getElementById('brandMark').innerHTML=markSVG('#1E2A4A','#5E6B3F');
   document.getElementById('footMark').innerHTML=markSVG('#FFFFFF','#77854f');
   (function(){var l=document.createElement('link');l.rel='icon';l.href='data:image/svg+xml,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" rx="20" fill="#1E2A4A"/>'+markSVG('#FFFFFF','#77854f').replace('<svg viewBox="0 0 100 100" aria-hidden="true">','<g transform="translate(8,8) scale(0.84)">').replace('</svg>','</g>')+'</svg>');document.head.appendChild(l);})();
+
+  /* hero photo reel — flowing happy real-life photos */
+  (function(){
+    var HERO=['assets/img/hero1.jpg','assets/img/hero2.jpg','assets/img/hero3.jpg'];
+    var f=document.getElementById('heroReel'); if(!f)return;
+    f.innerHTML=HERO.map(function(src,i){return '<img src="'+src+'" alt="A warm moment of care at Kairos" class="'+(i===0?'on':'')+'">';}).join('');
+    var imgs=f.querySelectorAll('img'), idx=0;
+    if(imgs.length>1) setInterval(function(){ imgs[idx].classList.remove('on'); idx=(idx+1)%imgs.length; imgs[idx].classList.add('on'); }, 3600);
+  })();
 
   /* ---------- settings / storage (server-backed via Cloudflare Worker) ---------- */
   var API='https://kairos-api.fern-swift.workers.dev';
