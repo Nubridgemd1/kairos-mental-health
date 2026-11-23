@@ -620,8 +620,11 @@ there's grace enough to help you heal, and hope to show you how.</p>
   document.getElementById('footMark').innerHTML=markSVG('#FFFFFF','#77854f');
   (function(){var l=document.createElement('link');l.rel='icon';l.href='data:image/svg+xml,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" rx="20" fill="#1E2A4A"/>'+markSVG('#FFFFFF','#77854f').replace('<svg viewBox="0 0 100 100" aria-hidden="true">','<g transform="translate(8,8) scale(0.84)">').replace('</svg>','</g>')+'</svg>');document.head.appendChild(l);})();
 
-  /* ---------- settings / storage ---------- */
-  var LS='kairos_settings_v2', PWK='kairos_pw', RECK='kairos_recovery', RESET='kairos_reset';
+  /* ---------- settings / storage (server-backed via Cloudflare Worker) ---------- */
+  var API='https://kairos-api.fern-swift.workers.dev';
+  var LS='kairos_settings_v2';
+  function clone(o){return JSON.parse(JSON.stringify(o));}
+  var STATE=null, AUTH_PW='', adminOpen=false;
   var DEF={
     phone:'(555) 480‑2272', email:'hello@kairosmentalhealthservices.com',
     address:'Secure telehealth & in‑person by appointment', hours:'Mon–Fri · 9:00 AM – 6:00 PM',
@@ -630,11 +633,19 @@ there's grace enough to help you heal, and hope to show you how.</p>
     states:[['Washington','assets/img/land1.jpg'],['Texas','assets/img/land4.jpg'],['California','assets/img/land3.jpg'],['Florida','assets/img/nature3.jpg'],['Georgia','assets/img/land2.jpg'],['Arizona','assets/img/land1.jpg'],['Colorado','assets/img/land4.jpg'],['New York','assets/img/land3.jpg'],['North Carolina','assets/img/nature3.jpg'],['Virginia','assets/img/land2.jpg']],
     conds:[['Anxiety','Worry, panic & unease','assets/img/land2.jpg'],['Depression','Low mood & loss of joy','assets/img/nature3.jpg'],['ADHD','Focus & attention','assets/img/land1.jpg'],['Bipolar Disorder','Mood highs & lows','assets/img/land4.jpg'],['PTSD & Trauma','Healing from the past','assets/img/land3.jpg'],['OCD','Intrusive thoughts','assets/img/land2.jpg'],['Insomnia','Rest & sleep','assets/img/nature3.jpg'],['Stress & Burnout','Overwhelm & fatigue','assets/img/land1.jpg'],['Grief & Loss','Moving through sorrow','assets/img/land4.jpg'],['Mood Disorders','Steadier days','assets/img/land3.jpg']]
   };
-  function SET(){ try{var s=JSON.parse(localStorage.getItem(LS)); if(s) return Object.assign(JSON.parse(JSON.stringify(DEF)),s);}catch(e){} return JSON.parse(JSON.stringify(DEF)); }
-  function SAVE(s){ try{localStorage.setItem(LS,JSON.stringify(s));}catch(e){} applySettings(); }
-  function getPw(){ try{return localStorage.getItem(PWK)||'kairos2026';}catch(e){return 'kairos2026';} }
-  function setPw(p){ try{localStorage.setItem(PWK,p);}catch(e){} }
-  function getRecovery(){ try{return localStorage.getItem(RECK)||SET().email;}catch(e){return SET().email;} }
+  function loadLocal(){ try{var s=JSON.parse(localStorage.getItem(LS)); if(s) return Object.assign(clone(DEF),s);}catch(e){} return clone(DEF); }
+  function cacheLocal(){ try{localStorage.setItem(LS,JSON.stringify(STATE));}catch(e){} }
+  STATE=loadLocal();
+  function SET(){ return STATE; }
+  function api(path,body){ return fetch(API+path,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body||{})}).then(function(r){return r.json().then(function(j){j._s=r.status;return j;});}); }
+  function SAVE(s,msgId){
+    STATE=s; cacheLocal(); applySettings();
+    if(AUTH_PW){
+      api('/api/settings',{password:AUTH_PW,settings:STATE}).then(function(j){
+        if(msgId)flash(msgId,!!j.ok,j.ok?'Saved & published live to all visitors.':'Saved on this device only (server: '+(j.error||'error')+').');
+      }).catch(function(){ if(msgId)flash(msgId,false,'Saved on this device only (offline — not yet published).'); });
+    } else if(msgId){ flash(msgId,true,'Saved on this device.'); }
+  }
 
   function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
   var pinTele='<span class="pin"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="12" rx="2"/><path d="M8 21h8" stroke-linecap="round"/></svg>Telehealth</span>';
@@ -664,6 +675,10 @@ there's grace enough to help you heal, and hope to show you how.</p>
     var ct=document.getElementById('condsTrack'); var cc=s.conds.map(condCard).join(''); ct.innerHTML=cc+cc;
   }
   applySettings();
+  /* pull live, shared content for every visitor */
+  fetch(API+'/api/settings').then(function(r){return r.json();}).then(function(remote){
+    if(remote&&typeof remote==='object'&&Object.keys(remote).length){ STATE=Object.assign(clone(DEF),remote); cacheLocal(); applySettings(); if(adminOpen&&AUTH_PW)fillPanel(); }
+  }).catch(function(){});
 
   /* ---------- song ---------- */
   var song=document.getElementById('song');
@@ -693,46 +708,55 @@ there's grace enough to help you heal, and hope to show you how.</p>
     setTimeout(closeBook,2600);
   }
 
-  /* ---------- admin ---------- */
-  function openAdmin(){document.getElementById('adminBg').classList.add('open');document.body.style.overflow='hidden';showLogin();}
-  function closeAdmin(){document.getElementById('adminBg').classList.remove('open');document.body.style.overflow='';}
+  /* ---------- admin (server-backed) ---------- */
+  function openAdmin(){document.getElementById('adminBg').classList.add('open');document.body.style.overflow='hidden';adminOpen=true;showLogin();}
+  function closeAdmin(){document.getElementById('adminBg').classList.remove('open');document.body.style.overflow='';adminOpen=false;}
   document.getElementById('adminBg').addEventListener('click',function(e){if(e.target===this)closeAdmin();});
   if(location.hash==='#admin')setTimeout(openAdmin,300);
   function show(id){['adLogin','adForgot','adPanel'].forEach(function(x){document.getElementById(x).hidden=(x!==id);});}
   function showLogin(){show('adLogin');document.getElementById('adLoginMsg').textContent='';document.getElementById('adPass').value='';}
-  function showForgot(){show('adForgot');document.getElementById('forgotStep1').hidden=false;document.getElementById('forgotStep2').hidden=true;document.getElementById('fgMsg').textContent='';document.getElementById('fgEmail').value=getRecovery();}
+  function showForgot(){show('adForgot');document.getElementById('forgotStep1').hidden=false;document.getElementById('forgotStep2').hidden=true;document.getElementById('fgMsg').textContent='';document.getElementById('fgEmail').value=STATE.email;}
   function backToLogin(){showLogin();}
   function adminLogin(){
-    var m=document.getElementById('adLoginMsg');
-    if(document.getElementById('adPass').value===getPw()){openPanel();}
-    else{m.style.color='#c0392b';m.textContent='Incorrect password. (Default: kairos2026 — change it under Security.)';}
+    var pw=document.getElementById('adPass').value, m=document.getElementById('adLoginMsg');
+    m.style.color='#6c7285';m.textContent='Signing in…';
+    api('/api/login',{password:pw}).then(function(j){
+      if(j.ok){AUTH_PW=pw;openPanel();}
+      else if(j._s===401){m.style.color='#c0392b';m.textContent='Incorrect password.';}
+      else offlineLogin(pw,m);
+    }).catch(function(){offlineLogin(pw,m);});
   }
-  function adminLogout(){showLogin();}
-  function openPanel(){
-    show('adPanel');
-    document.getElementById('syncNote').innerHTML='To publish changes for <b>all visitors</b>, ask us to connect the live backend.';
-    var s=SET();
+  function offlineLogin(pw,m){ if(pw===(localStorage.getItem('kairos_pw')||'kairos2026')){AUTH_PW=pw;m.textContent='';openPanel();} else {m.style.color='#c0392b';m.textContent='Incorrect password.';} }
+  function adminLogout(){AUTH_PW='';showLogin();}
+  function fillPanel(){
+    var s=STATE;
     s_phone.value=s.phone;s_email.value=s.email;s_address.value=s.address;s_hours.value=s.hours;
     s_pvName.value=s.pvName;s_pvCred.value=s.pvCred;s_pvBio.value=s.pvBio;
     document.getElementById('pvThumb').src=s.headshot||'assets/img/telehealth1.jpg';
-    document.getElementById('s_recovery').value=getRecovery();
-    renderPhotoAdmin(); adTab('contact');
+    document.getElementById('s_recovery').value=s.email;
+    renderPhotoAdmin();
+  }
+  function openPanel(){
+    show('adPanel');
+    document.getElementById('syncNote').innerHTML='Changes publish <b>live to every visitor</b> through your Kairos server.';
+    fillPanel(); adTab('contact');
   }
   function adTab(t){
     document.querySelectorAll('.tabs button').forEach(function(b){b.classList.toggle('active',b.dataset.tab===t);});
     document.querySelectorAll('.tabpane').forEach(function(p){p.classList.toggle('active',p.id==='tab-'+t);});
   }
-  function flash(id,ok,txt){var m=document.getElementById(id);m.style.color=ok?'#5E6B3F':'#c0392b';m.textContent=txt;setTimeout(function(){if(m.textContent===txt)m.textContent='';},4000);}
+  function flash(id,ok,txt){var m=document.getElementById(id);if(!m)return;m.style.color=ok?'#5E6B3F':'#c0392b';m.textContent=txt;setTimeout(function(){if(m.textContent===txt)m.textContent='';},5000);}
 
-  function saveContact(){var s=SET();s.phone=s_phone.value.trim()||s.phone;s.email=s_email.value.trim()||s.email;s.address=s_address.value.trim();s.hours=s_hours.value.trim();SAVE(s);flash('contactMsg',true,'Contact details updated.');}
-  function saveProvider(){var s=SET();s.pvName=s_pvName.value.trim()||s.pvName;s.pvCred=s_pvCred.value.trim();s.pvBio=s_pvBio.value.trim()||s.pvBio;SAVE(s);flash('provMsg',true,'Clinician details updated.');}
+  function saveContact(){var s=STATE;s.phone=s_phone.value.trim()||s.phone;s.email=s_email.value.trim()||s.email;s.address=s_address.value.trim();s.hours=s_hours.value.trim();SAVE(s,'contactMsg');}
+  function saveProvider(){var s=STATE;s.pvName=s_pvName.value.trim()||s.pvName;s.pvCred=s_pvCred.value.trim();s.pvBio=s_pvBio.value.trim()||s.pvBio;SAVE(s,'provMsg');}
 
-  function readImg(file,cb){ if(!file)return; if(file.size>6*1024*1024){flash('photoMsg',false,'Image is large (>6MB) — please pick a smaller one.');return;} var r=new FileReader();r.onload=function(){cb(r.result);};r.readAsDataURL(file); }
-  function uploadHeadshot(inp){ readImg(inp.files[0],function(d){var s=SET();s.headshot=d;SAVE(s);document.getElementById('pvThumb').src=d;flash('provMsg',true,'Headshot updated.');}); }
-  function removeHeadshot(){var s=SET();s.headshot='';SAVE(s);document.getElementById('pvThumb').src='assets/img/telehealth1.jpg';flash('provMsg',true,'Headshot removed — showing monogram.');}
+  function readImg(file,cb){ if(!file)return; if(file.size>3*1024*1024){flash('photoMsg',false,'Image is large (>3MB) — please pick a smaller one.');return;} var r=new FileReader();r.onload=function(){cb(r.result);};r.readAsDataURL(file); }
+  function doUpload(dataUrl,onUrl,onFail){ if(!AUTH_PW)return onFail(dataUrl); api('/api/upload',{password:AUTH_PW,dataUrl:dataUrl}).then(function(j){ if(j.ok&&j.url)onUrl(j.url); else onFail(dataUrl); }).catch(function(){onFail(dataUrl);}); }
+  function uploadHeadshot(inp){ flash('provMsg',true,'Uploading…'); readImg(inp.files[0],function(d){ doUpload(d,function(url){var s=STATE;s.headshot=url;document.getElementById('pvThumb').src=url;SAVE(s,'provMsg');},function(d2){var s=STATE;s.headshot=d2;document.getElementById('pvThumb').src=d2;SAVE(s,'provMsg');}); }); }
+  function removeHeadshot(){var s=STATE;s.headshot='';document.getElementById('pvThumb').src='assets/img/telehealth1.jpg';SAVE(s,'provMsg');}
 
   function renderPhotoAdmin(){
-    var s=SET();
+    var s=STATE;
     document.getElementById('statesAdmin').innerHTML=s.states.map(function(st,i){
       return '<div class="photorow"><img src="'+esc(st[1])+'" alt=""><div class="pr-main"><b>'+esc(st[0])+'</b><span>Telehealth state card</span></div><label class="up">Replace<input type="file" accept="image/*" onchange="replacePhoto(\'states\','+i+',this)"></label></div>';
     }).join('');
@@ -740,45 +764,41 @@ there's grace enough to help you heal, and hope to show you how.</p>
       return '<div class="photorow"><img src="'+esc(c[2])+'" alt=""><div class="pr-main"><b>'+esc(c[0])+'</b><span>'+esc(c[1])+'</span></div><label class="up">Replace<input type="file" accept="image/*" onchange="replacePhoto(\'conds\','+i+',this)"></label></div>';
     }).join('');
   }
-  function replacePhoto(group,i,inp){ readImg(inp.files[0],function(d){var s=SET(); if(group==='states')s.states[i][1]=d; else s.conds[i][2]=d; SAVE(s); renderPhotoAdmin(); flash('photoMsg',true,'Photo updated.');}); }
-  function resetPhotos(){var s=SET();s.states=JSON.parse(JSON.stringify(DEF.states));s.conds=JSON.parse(JSON.stringify(DEF.conds));SAVE(s);renderPhotoAdmin();flash('photoMsg',true,'Reel photos reset to originals.');}
+  function replacePhoto(group,i,inp){ flash('photoMsg',true,'Uploading…'); readImg(inp.files[0],function(d){ doUpload(d,function(url){setPhoto(group,i,url);},function(d2){setPhoto(group,i,d2);}); }); }
+  function setPhoto(group,i,v){ var s=STATE; if(group==='states')s.states[i][1]=v; else s.conds[i][2]=v; SAVE(s,'photoMsg'); renderPhotoAdmin(); }
+  function resetPhotos(){var s=STATE;s.states=clone(DEF.states);s.conds=clone(DEF.conds);SAVE(s,'photoMsg');renderPhotoAdmin();}
 
   function changePw(){
     var cur=document.getElementById('s_cur').value, nw=document.getElementById('s_new').value, nw2=document.getElementById('s_new2').value;
-    if(cur!==getPw())return flash('pwMsg',false,'Current password is incorrect.');
+    if(cur!==AUTH_PW)return flash('pwMsg',false,'Current password is incorrect.');
     if(nw.length<4)return flash('pwMsg',false,'New password must be at least 4 characters.');
     if(nw!==nw2)return flash('pwMsg',false,'New passwords do not match.');
-    setPw(nw);document.getElementById('s_cur').value=document.getElementById('s_new').value=document.getElementById('s_new2').value='';
-    flash('pwMsg',true,'Password updated.');
+    api('/api/password',{password:AUTH_PW,newPassword:nw}).then(function(j){
+      if(j.ok){AUTH_PW=nw;try{localStorage.setItem('kairos_pw',nw);}catch(e){} document.getElementById('s_cur').value=document.getElementById('s_new').value=document.getElementById('s_new2').value=''; flash('pwMsg',true,'Password updated for all admins.');}
+      else flash('pwMsg',false,'Could not update password ('+(j.error||'')+').');
+    }).catch(function(){ try{localStorage.setItem('kairos_pw',nw);}catch(e){} AUTH_PW=nw; flash('pwMsg',true,'Password updated on this device (offline).'); });
   }
-  function saveRecovery(){var e=document.getElementById('s_recovery').value.trim();if(!/.+@.+\..+/.test(e))return flash('recMsg',false,'Enter a valid email.');try{localStorage.setItem(RECK,e);}catch(x){}flash('recMsg',true,'Recovery email saved.');}
+  function saveRecovery(){var e=document.getElementById('s_recovery').value.trim();if(!/.+@.+\..+/.test(e))return flash('recMsg',false,'Enter a valid email.');api('/api/recovery',{password:AUTH_PW,email:e}).then(function(j){flash('recMsg',!!j.ok,j.ok?'Recovery email saved.':'Could not save.');}).catch(function(){flash('recMsg',false,'Offline — try again when connected.');});}
 
-  /* forgot password -> email code via FormSubmit (keyless) */
+  /* forgot password -> server emails a 6-digit code */
   function sendReset(){
     var email=document.getElementById('fgEmail').value.trim(), m=document.getElementById('fgMsg');
-    if(email.toLowerCase()!==getRecovery().toLowerCase())return (m.style.color='#c0392b',m.textContent='That email is not on file as the recovery email.');
-    var code=(''+Math.floor(100000+Math.random()*900000));
-    try{localStorage.setItem(RESET,JSON.stringify({code:code,at:Date.now()}));}catch(e){}
-    m.style.color='#5E6B3F';m.textContent='Sending your reset code…';
-    fetch('https://formsubmit.co/ajax/'+encodeURIComponent(email),{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},
-      body:JSON.stringify({_subject:'Your Kairos admin reset code',_template:'box',message:'Your Kairos admin password reset code is: '+code+'  (valid for 30 minutes). If you did not request this, you can ignore this email.'})})
-      .then(function(r){return r.json();}).then(function(){
-        document.getElementById('forgotStep1').hidden=true;document.getElementById('forgotStep2').hidden=false;
-        m.style.color='#5E6B3F';m.textContent='Code sent to '+email+'. Check your inbox (and spam). First‑time use may ask you to confirm the address once.';
-      }).catch(function(){
-        document.getElementById('forgotStep1').hidden=true;document.getElementById('forgotStep2').hidden=false;
-        m.style.color='#9a7b1e';m.textContent='Could not reach email service. Your code is: '+code+' (enter it below).';
-      });
+    if(!/.+@.+\..+/.test(email))return (m.style.color='#c0392b',m.textContent='Enter a valid email.');
+    m.style.color='#6c7285';m.textContent='Sending your reset code…';
+    api('/api/request-reset',{email:email}).then(function(){
+      document.getElementById('forgotStep1').hidden=true;document.getElementById('forgotStep2').hidden=false;
+      m.style.color='#5E6B3F';m.textContent='If that address is your recovery email, a 6‑digit code is on its way. Check inbox & spam. (First‑time use asks you to confirm the address once.)';
+    }).catch(function(){ m.style.color='#c0392b';m.textContent='Could not reach the server — check your connection and try again.'; });
   }
   function confirmReset(){
     var m=document.getElementById('fgMsg');
-    var rec; try{rec=JSON.parse(localStorage.getItem(RESET)||'null');}catch(e){rec=null;}
-    if(!rec||Date.now()-rec.at>30*60000)return (m.style.color='#c0392b',m.textContent='Code expired — please request a new one.');
-    if(document.getElementById('fgCode').value.trim()!==rec.code)return (m.style.color='#c0392b',m.textContent='Incorrect code.');
-    var nw=document.getElementById('fgNew').value; if(nw.length<4)return (m.style.color='#c0392b',m.textContent='New password must be at least 4 characters.');
-    setPw(nw); try{localStorage.removeItem(RESET);}catch(e){}
-    m.style.color='#5E6B3F';m.textContent='Password reset! You can sign in now.';
-    setTimeout(showLogin,1400);
+    var email=document.getElementById('fgEmail').value.trim(), code=document.getElementById('fgCode').value.trim(), nw=document.getElementById('fgNew').value;
+    if(nw.length<4)return (m.style.color='#c0392b',m.textContent='New password must be at least 4 characters.');
+    m.style.color='#6c7285';m.textContent='Checking…';
+    api('/api/reset',{email:email,code:code,newPassword:nw}).then(function(j){
+      if(j.ok){m.style.color='#5E6B3F';m.textContent='Password reset! You can sign in now.';setTimeout(showLogin,1400);}
+      else {m.style.color='#c0392b';m.textContent=(j.error==='expired'?'Code expired — request a new one.':'Incorrect code or email.');}
+    }).catch(function(){ m.style.color='#c0392b';m.textContent='Could not reach the server.'; });
   }
 </script>
 </body>
