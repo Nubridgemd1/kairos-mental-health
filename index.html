@@ -304,7 +304,7 @@
       <span class="bt"><b>KAIROS</b><span>Mental Health</span></span>
     </a>
     <nav class="links">
-      <a href="#about">About</a><a href="#provider">Clinician</a><a href="#services">Services</a><a href="#coverage">Where We Care</a><a href="#conditions">We Treat</a><a href="#song">Our Song</a><a href="#contact">Contact</a>
+      <a href="#about">About</a><a href="#provider">Clinician</a><a href="#services">Services</a><a href="#coverage">Where We Care</a><a href="#conditions">We Treat</a><a href="#song">Our Song</a><a href="#contact">Contact</a><a href="#" onclick="openBook();return false" style="color:var(--olive);font-weight:700">Book</a>
     </nav>
     <div class="navcta">
       <div class="ph">Call us<br><b class="j-phone">(555) 480‑2272</b></div>
@@ -596,6 +596,7 @@ there's grace enough to help you heal, and hope to show you how.</p>
         <button class="active" data-tab="contact" onclick="adTab('contact')">Contact</button>
         <button data-tab="provider" onclick="adTab('provider')">Clinician</button>
         <button data-tab="photos" onclick="adTab('photos')">Reel photos</button>
+        <button data-tab="bookings" onclick="adTab('bookings')">Bookings</button>
         <button data-tab="messages" onclick="adTab('messages')">Messages</button>
         <button data-tab="security" onclick="adTab('security')">Security</button>
       </div>
@@ -604,6 +605,7 @@ there's grace enough to help you heal, and hope to show you how.</p>
         <div class="row2"><div class="field"><label>Phone</label><input id="s_phone"></div><div class="field"><label>Email</label><input id="s_email" type="email"></div></div>
         <div class="field"><label>Visits / location line</label><input id="s_address"></div>
         <div class="field"><label>Hours</label><input id="s_hours"></div>
+        <div class="field"><label>Booking alert email <span style="font-weight:400;color:var(--mute)">(where new‑booking alerts are sent)</span></label><input id="s_notify" type="email"></div>
         <button class="btn btn-olive" onclick="saveContact()">Save contact</button>
         <div class="msg" id="contactMsg"></div>
       </div>
@@ -629,6 +631,12 @@ there's grace enough to help you heal, and hope to show you how.</p>
         <div id="condsAdmin"></div>
         <span class="link" onclick="resetPhotos()">Reset all reel photos to originals</span>
         <div class="msg" id="photoMsg"></div>
+      </div>
+
+      <div class="tabpane" id="tab-bookings">
+        <div class="admNote">Every booking request from the site appears here, and an alert email is sent to your booking address.</div>
+        <div id="bookingsAdmin"><p style="color:var(--mute);font-size:13px">Loading…</p></div>
+        <span class="link" onclick="loadBookings()">↻ Refresh</span>
       </div>
 
       <div class="tabpane" id="tab-messages">
@@ -678,7 +686,7 @@ there's grace enough to help you heal, and hope to show you how.</p>
   function clone(o){return JSON.parse(JSON.stringify(o));}
   var STATE=null, AUTH_PW='', adminOpen=false;
   var DEF={
-    phone:'(555) 480‑2272', email:'hello@kairosmentalhealthservices.com',
+    phone:'(555) 480‑2272', email:'hello@kairosmentalhealthservices.com', notify:'info@kairosmentalhealthservices.com',
     address:'Dickinson, TX · Secure telehealth & in‑person by appointment', hours:'Mon–Fri · 9:00 AM – 6:00 PM',
     pvName:'Ewoma Cynthia Obaro, PMHNP-BC', pvCred:'Psychiatric Mental Health Nurse Practitioner — Board Certified',
     pvBio:document.getElementById('pvBio').textContent, headshot:'',
@@ -758,8 +766,10 @@ there's grace enough to help you heal, and hope to show you how.</p>
   function submitBook(){
     var m=document.getElementById('bookMsg');
     if(!val('b_name')||!val('b_email')||!val('b_phone')){m.textContent='Please add your name, email and phone.';m.style.color='#c0392b';return;}
-    try{var bk=JSON.parse(localStorage.getItem('kairos_bookings')||'[]');bk.unshift({name:val('b_name'),email:val('b_email'),phone:val('b_phone'),for:val('b_for'),date:val('b_date'),state:val('b_state'),visit:val('b_visit'),concern:val('b_concern'),at:new Date().toISOString()});localStorage.setItem('kairos_bookings',JSON.stringify(bk));}catch(e){}
-    m.style.color='#5E6B3F';m.textContent='Thank you, '+val('b_name').split(' ')[0]+'! Your request is in — we’ll be in touch shortly. (Demo: saved locally.)';
+    var bk={name:val('b_name'),email:val('b_email'),phone:val('b_phone'),for:val('b_for'),date:val('b_date'),state:val('b_state'),visit:val('b_visit'),concern:val('b_concern')};
+    try{var a=JSON.parse(localStorage.getItem('kairos_bookings')||'[]');a.unshift(Object.assign({at:new Date().toISOString()},bk));localStorage.setItem('kairos_bookings',JSON.stringify(a));}catch(e){}
+    m.style.color='#5E6B3F';m.textContent='Thank you, '+val('b_name').split(' ')[0]+'! Your request is in — our care team will reach out shortly.';
+    api('/api/book',bk).catch(function(){});
     setTimeout(closeBook,2600);
   }
 
@@ -785,7 +795,7 @@ there's grace enough to help you heal, and hope to show you how.</p>
   function adminLogout(){AUTH_PW='';showLogin();}
   function fillPanel(){
     var s=STATE;
-    s_phone.value=s.phone;s_email.value=s.email;s_address.value=s.address;s_hours.value=s.hours;
+    s_phone.value=s.phone;s_email.value=s.email;s_address.value=s.address;s_hours.value=s.hours;s_notify.value=s.notify||'info@kairosmentalhealthservices.com';
     s_pvName.value=s.pvName;s_pvCred.value=s.pvCred;s_pvBio.value=s.pvBio;
     document.getElementById('pvThumb').src=s.headshot||'assets/img/telehealth1.jpg';
     document.getElementById('s_recovery').value=s.email;
@@ -800,10 +810,11 @@ there's grace enough to help you heal, and hope to show you how.</p>
     document.querySelectorAll('.tabs button').forEach(function(b){b.classList.toggle('active',b.dataset.tab===t);});
     document.querySelectorAll('.tabpane').forEach(function(p){p.classList.toggle('active',p.id==='tab-'+t);});
     if(t==='messages')loadChats();
+    if(t==='bookings')loadBookings();
   }
   function flash(id,ok,txt){var m=document.getElementById(id);if(!m)return;m.style.color=ok?'#5E6B3F':'#c0392b';m.textContent=txt;setTimeout(function(){if(m.textContent===txt)m.textContent='';},5000);}
 
-  function saveContact(){var s=STATE;s.phone=s_phone.value.trim()||s.phone;s.email=s_email.value.trim()||s.email;s.address=s_address.value.trim();s.hours=s_hours.value.trim();SAVE(s,'contactMsg');}
+  function saveContact(){var s=STATE;s.phone=s_phone.value.trim()||s.phone;s.email=s_email.value.trim()||s.email;s.address=s_address.value.trim();s.hours=s_hours.value.trim();s.notify=s_notify.value.trim()||s.notify;SAVE(s,'contactMsg');}
   function saveProvider(){var s=STATE;s.pvName=s_pvName.value.trim()||s.pvName;s.pvCred=s_pvCred.value.trim();s.pvBio=s_pvBio.value.trim()||s.pvBio;SAVE(s,'provMsg');}
 
   function readImg(file,cb){ if(!file)return; if(file.size>3*1024*1024){flash('photoMsg',false,'Image is large (>3MB) — please pick a smaller one.');return;} var r=new FileReader();r.onload=function(){cb(r.result);};r.readAsDataURL(file); }
@@ -911,6 +922,21 @@ there's grace enough to help you heal, and hope to show you how.</p>
     }).catch(function(){box.innerHTML='<p style="color:#c0392b;font-size:13px">Offline — could not load messages.</p>';});
   }
   function delChat(id){ api('/api/chat-delete',{password:AUTH_PW,id:id}).then(function(){loadChats();}).catch(function(){}); }
+
+  /* ---------- admin: bookings ---------- */
+  function loadBookings(){
+    var box=document.getElementById('bookingsAdmin'); box.innerHTML='<p style="color:var(--mute);font-size:13px">Loading…</p>';
+    api('/api/bookings',{password:AUTH_PW}).then(function(j){
+      if(!j.ok){box.innerHTML='<p style="color:#c0392b;font-size:13px">Could not load bookings.</p>';return;}
+      if(!j.bookings||!j.bookings.length){box.innerHTML='<p style="color:var(--mute);font-size:13px">No booking requests yet. New bookings from the site will appear here.</p>';return;}
+      box.innerHTML=j.bookings.map(function(b){
+        var when=''; try{when=new Date(b.at).toLocaleString();}catch(e){}
+        var rows=[['For',b.forWhom],['Preferred date',b.date],['Visit',b.visit],['State',b.state],['Notes',b.concern]].filter(function(r){return r[1];}).map(function(r){return '<div style="font-size:12.5px;color:#434a5e"><b style="color:#1E2A4A">'+r[0]+':</b> '+esc(r[1])+'</div>';}).join('');
+        return '<div class="photorow" style="flex-direction:column;align-items:stretch;gap:4px"><div style="display:flex;gap:10px;align-items:flex-start"><div class="pr-main"><b>'+esc(b.name)+'</b><span>'+esc(b.email||'')+' · '+esc(b.phone||'')+'<br>'+when+'</span></div><button class="cchip" style="background:#f3dede;color:#a33" onclick="delBooking(\''+esc(b.id)+'\')">Delete</button></div><div style="border-top:1px solid var(--line);padding-top:6px">'+rows+'</div></div>';
+      }).join('');
+    }).catch(function(){box.innerHTML='<p style="color:#c0392b;font-size:13px">Offline — could not load bookings.</p>';});
+  }
+  function delBooking(id){ api('/api/booking-delete',{password:AUTH_PW,id:id}).then(function(){loadBookings();}).catch(function(){}); }
 </script>
 </body>
 </html>
