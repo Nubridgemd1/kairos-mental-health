@@ -1,0 +1,785 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Kairos Mental Health Services</title>
+<meta name="description" content="Kairos Mental Health Services — compassionate psychiatric care and therapy with Ewoma Obaro, PMHNP. Secure telehealth and in person across Washington, Texas and beyond.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --beige:#F4ECDD; --beige2:#EFE4D0; --cream:#FBF6EC; --paper:#ffffff;
+    --navy:#1E2A4A; --navy2:#2A3A62; --navy-deep:#141d36;
+    --olive:#5E6B3F; --olive2:#77854f; --olive-soft:#E7E7D3;
+    --ink:#2a3042; --mute:#6c7285; --line:#e4ddcc; --gold:#C2A15A;
+    --ff-d:'Fraunces',Georgia,serif; --ff-b:'Inter',system-ui,-apple-system,Arial,sans-serif;
+    color-scheme:light;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{background:var(--beige);color:var(--ink);font-family:var(--ff-b);line-height:1.6;font-size:16px;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  img{max-width:100%;display:block}
+  h1,h2,h3,h4{font-family:var(--ff-d);color:var(--navy);font-weight:600;line-height:1.12;margin:0}
+  a{color:var(--navy);text-decoration:none}
+  p{margin:0 0 14px}
+  .wrap{max-width:1140px;margin:0 auto;padding-left:max(22px,env(safe-area-inset-left));padding-right:max(22px,env(safe-area-inset-right))}
+  .eyebrow{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--olive);background:var(--olive-soft);padding:7px 14px;border-radius:40px}
+  .btn{display:inline-flex;align-items:center;gap:9px;font-weight:600;font-size:15px;border-radius:40px;padding:13px 26px;cursor:pointer;border:0;transition:.18s;font-family:var(--ff-b);min-height:48px}
+  .btn-olive{background:var(--olive);color:#fff}.btn-olive:hover{background:var(--olive2)}
+  .btn-navy{background:var(--navy);color:#fff}.btn-navy:hover{background:var(--navy2)}
+  .btn-ghost{background:transparent;border:1.6px solid rgba(255,255,255,.45);color:#fff}.btn-ghost:hover{background:rgba(255,255,255,.1)}
+  .btn-outline{background:#fff;border:1.6px solid var(--line);color:var(--navy)}.btn-outline:hover{border-color:var(--olive);color:var(--olive)}
+
+  /* logo mark */
+  .mark{width:46px;height:46px;flex:none}
+  .mark svg{width:100%;height:100%;display:block}
+
+  /* header */
+  header{position:sticky;top:0;z-index:50;background:rgba(244,236,221,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+  header .wrap{display:flex;align-items:center;justify-content:space-between;height:76px;gap:16px}
+  .brand{display:flex;align-items:center;gap:12px}
+  .brand b{font-family:var(--ff-d);color:var(--navy);font-size:19px;display:block;line-height:1.05;font-weight:600;letter-spacing:.02em}
+  .brand span{font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--olive);font-weight:600}
+  nav.links{display:flex;gap:24px;align-items:center}
+  nav.links a{font-size:14.5px;font-weight:500;color:var(--ink)}
+  nav.links a:hover{color:var(--olive)}
+  .navcta{display:flex;align-items:center;gap:14px}
+  .navcta .ph{font-size:12px;color:var(--mute);text-align:right}
+  .navcta .ph b{display:block;color:var(--navy);font-size:15px;font-family:var(--ff-b)}
+  .burger{display:none;flex-direction:column;gap:5px;background:0;border:0;cursor:pointer;padding:8px}
+  .burger span{width:24px;height:2.4px;background:var(--navy);border-radius:2px}
+  .mobmenu{display:none;flex-direction:column;gap:4px;padding:10px 22px 18px;background:var(--cream);border-bottom:1px solid var(--line)}
+  .mobmenu a{padding:11px 0;font-size:16px;border-bottom:1px solid var(--line)}
+  .mobmenu.open{display:flex}
+
+  /* hero */
+  .hero{background:radial-gradient(90% 120% at 82% 0%,var(--navy2) 0%,var(--navy) 52%,var(--navy-deep) 100%);color:#fff;position:relative;overflow:hidden}
+  .hero::after{content:"";position:absolute;inset:0;background:radial-gradient(60% 60% at 15% 90%,rgba(94,107,63,.35),transparent 70%);pointer-events:none}
+  .hero .wrap{display:grid;grid-template-columns:1.05fr .95fr;gap:46px;align-items:center;padding:58px 22px 68px;position:relative;z-index:1}
+  .hero h1{color:#fff;font-size:clamp(34px,5vw,56px);margin:16px 0 16px}
+  .hero h1 em{font-style:italic;color:#d8d0ae;font-weight:500}
+  .hero p.lead{color:#d7dcea;font-size:18px;max-width:52ch;margin:0 0 24px}
+  .hero .eyebrow{color:#dfe5c4;background:rgba(119,133,79,.3)}
+  .cta{display:flex;flex-wrap:wrap;gap:12px}
+  .songhint{display:inline-flex;align-items:center;gap:9px;margin-top:18px;background:rgba(194,161,90,.16);border:1px solid rgba(194,161,90,.4);color:#f0e6cb;font-size:13px;font-weight:500;padding:9px 15px;border-radius:40px;cursor:pointer}
+  .eq{display:inline-flex;gap:2px;align-items:flex-end;height:14px}
+  .eq i{width:3px;background:var(--gold);border-radius:2px;height:5px;animation:eq 1s ease-in-out infinite}
+  .eq i:nth-child(2){animation-delay:.2s}.eq i:nth-child(3){animation-delay:.4s}.eq i:nth-child(4){animation-delay:.1s}
+  @keyframes eq{0%,100%{height:4px}50%{height:14px}}
+  .trust{display:flex;gap:30px;margin-top:30px;padding-top:24px;border-top:1px solid rgba(255,255,255,.14);flex-wrap:wrap}
+  .trust b{font-family:var(--ff-d);font-size:17px;color:#fff;display:block}
+  .trust span{font-size:12.5px;color:#aab2c9}
+  .portrait{position:relative}
+  .frame{border-radius:22px;overflow:hidden;box-shadow:0 30px 60px rgba(10,16,34,.45);border:1px solid rgba(255,255,255,.12);aspect-ratio:1/1;background:#0d1530}
+  .frame img{width:100%;height:100%;object-fit:cover}
+  .cap{position:absolute;left:18px;bottom:18px;right:18px;background:rgba(20,29,54,.72);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.14);border-radius:14px;padding:12px 16px}
+  .cap b{font-family:var(--ff-d);color:#fff;font-size:15px;display:block}.cap span{color:#c7cee0;font-size:12px}
+
+  .sec{padding:70px 0}
+  .sec.cream{background:var(--cream)}
+  .sec.beige2{background:var(--beige2)}
+  .sec.navy{background:linear-gradient(135deg,var(--navy-deep),var(--navy));color:#fff}
+  .head{max-width:680px;margin:0 auto 40px;text-align:center}
+  .head .k{color:var(--olive);font-weight:700;letter-spacing:.16em;text-transform:uppercase;font-size:12.5px}
+  .sec.navy .head .k{color:var(--gold)}
+  .head h2{font-size:clamp(27px,3.6vw,40px);margin:10px 0 10px}
+  .sec.navy .head h2{color:#fff}
+  .head p{color:var(--mute);font-size:16px;margin:0}
+  .sec.navy .head p{color:#c7cee0}
+
+  .about{display:grid;grid-template-columns:.9fr 1.1fr;gap:46px;align-items:center}
+  .about .ph{border-radius:20px;overflow:hidden;box-shadow:0 22px 44px rgba(30,42,74,.14);border:1px solid var(--line);aspect-ratio:4/5}
+  .about .ph img{width:100%;height:100%;object-fit:cover}
+  .about h2{font-size:clamp(26px,3.4vw,38px);margin:12px 0 14px}
+  .about p{color:#434a5e}
+  .mission{background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;border-radius:18px;padding:26px 30px;margin-top:22px}
+  .mission h4{color:#dfe5c4;font-family:var(--ff-b);font-size:12px;letter-spacing:.14em;text-transform:uppercase;margin:0 0 8px}
+  .mission p{color:#e7eaf3;font-family:var(--ff-d);font-size:19px;font-style:italic;line-height:1.5;margin:0}
+
+  /* provider */
+  .prov{display:grid;grid-template-columns:.8fr 1.2fr;gap:46px;align-items:center}
+  .pv-photo{position:relative;aspect-ratio:4/5;border-radius:20px;overflow:hidden;background:linear-gradient(135deg,var(--olive-soft),var(--beige2));border:1px solid var(--line);box-shadow:0 22px 44px rgba(30,42,74,.14);display:grid;place-items:center}
+  .pv-photo img{width:100%;height:100%;object-fit:cover}
+  .pv-mono{font-family:var(--ff-d);font-size:92px;color:var(--olive);letter-spacing:.04em}
+  .pv-badge{position:absolute;left:14px;bottom:14px;background:rgba(20,29,54,.82);color:#fff;border-radius:12px;padding:9px 14px;backdrop-filter:blur(4px)}
+  .pv-badge b{font-family:var(--ff-d);font-size:15px;display:block}.pv-badge span{font-size:11.5px;color:#dfe5c4}
+  .prov h2{font-size:clamp(26px,3.4vw,38px);margin:12px 0 6px}
+  .prov .cred{color:var(--olive);font-weight:700;font-size:14px;letter-spacing:.04em;margin-bottom:14px}
+  .prov p{color:#434a5e}
+  .pv-tags{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 20px}
+  .pv-tags span{background:var(--paper);border:1px solid var(--line);color:var(--navy);font-weight:600;font-size:13px;padding:6px 13px;border-radius:40px}
+
+  .values{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+  .value{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:24px 20px;text-align:center}
+  .value .ic{width:52px;height:52px;border-radius:14px;background:var(--olive-soft);display:grid;place-items:center;margin:0 auto 14px}
+  .value .ic svg{width:26px;height:26px;stroke:var(--olive)}
+  .value b{font-family:var(--ff-d);color:var(--navy);font-size:18px;display:block;margin-bottom:5px}
+  .value span{font-size:13.5px;color:var(--mute)}
+
+  .svcs{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+  .svc{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:28px 24px;transition:.2s}
+  .svc:hover{transform:translateY(-4px);box-shadow:0 20px 40px rgba(30,42,74,.1);border-color:var(--olive-soft)}
+  .svc .ic{width:56px;height:56px;border-radius:14px;background:var(--navy);display:grid;place-items:center;margin-bottom:18px}
+  .svc .ic svg{width:28px;height:28px;stroke:#fff}
+  .svc h3{font-size:19px;margin-bottom:8px}
+  .svc p{color:var(--mute);font-size:14.5px;margin:0}
+
+  /* reels */
+  .reel{position:relative;overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent);mask-image:linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent)}
+  .reel-track{display:flex;gap:18px;width:max-content;will-change:transform}
+  .reel.r1 .reel-track{animation:scrollL 46s linear infinite}
+  .reel.r2 .reel-track{animation:scrollL 54s linear infinite}
+  .reel:hover .reel-track{animation-play-state:paused}
+  @keyframes scrollL{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+  .rcard{position:relative;width:258px;height:338px;border-radius:18px;overflow:hidden;flex:none;box-shadow:0 16px 34px rgba(20,29,54,.16);background:#1b2440}
+  .rcard img{width:100%;height:100%;object-fit:cover}
+  .rcard .ov{position:absolute;inset:0;background:linear-gradient(to top,rgba(20,29,54,.9) 6%,rgba(20,29,54,.1) 58%,rgba(20,29,54,.4))}
+  .rcard.olive .ov{background:linear-gradient(to top,rgba(39,46,26,.92) 6%,rgba(94,107,63,.12) 58%,rgba(39,46,26,.35))}
+  .rcard .lab{position:absolute;left:16px;right:16px;bottom:15px;color:#fff;z-index:1}
+  .rcard .lab b{font-family:var(--ff-d);font-size:21px;display:block;line-height:1.15}
+  .rcard .lab span{font-size:12.5px;color:#e7ebd6;display:block;margin-top:3px}
+  .rcard .pin{position:absolute;top:12px;left:12px;z-index:1;display:inline-flex;align-items:center;gap:6px;background:rgba(194,161,90,.95);color:#1b2440;font-weight:700;font-size:10.5px;letter-spacing:.07em;text-transform:uppercase;padding:5px 10px;border-radius:30px}
+  .rcard.olive .pin{background:rgba(231,231,211,.95);color:#2e361e}
+  .rcard .pin svg{width:12px;height:12px}
+  .reelnote{text-align:center;color:var(--mute);font-size:13px;margin:22px auto 0;max-width:560px}
+  .sec.navy .reelnote{color:#aab2c9}
+
+  .ins{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+  .panel{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:30px 28px}
+  .panel h3{font-size:21px;margin-bottom:10px}
+  .panel p{color:var(--mute);font-size:14.5px}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+  .chip{background:var(--olive-soft);color:var(--olive);font-weight:600;font-size:13px;padding:7px 14px;border-radius:40px}
+  .pay-list{list-style:none;margin:14px 0 0;padding:0}
+  .pay-list li{display:flex;align-items:center;gap:10px;padding:7px 0;font-size:14.5px;color:#434a5e}
+  .pay-list svg{width:20px;height:20px;stroke:var(--olive);flex:none}
+
+  /* song */
+  .song{background:linear-gradient(135deg,var(--navy-deep),var(--navy));color:#fff;position:relative;overflow:hidden}
+  .song::after{content:"";position:absolute;right:-10%;top:-30%;width:60%;height:160%;background:radial-gradient(circle,rgba(194,161,90,.16),transparent 60%);pointer-events:none}
+  .song .wrap{position:relative;z-index:1;display:grid;grid-template-columns:1fr 1.1fr;gap:46px;align-items:center}
+  .song .k{color:var(--gold);font-weight:700;letter-spacing:.16em;text-transform:uppercase;font-size:12.5px}
+  .song h2{color:#fff;font-size:clamp(28px,4vw,44px);margin:10px 0 12px}
+  .song p.intro{color:#c7cee0;font-size:16px;max-width:44ch}
+  .player{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);border-radius:16px;padding:18px 20px;margin-top:22px}
+  .player .pl-row{display:flex;align-items:center;gap:14px;margin-bottom:12px}
+  .player .disc{width:46px;height:46px;border-radius:50%;background:var(--gold);display:grid;place-items:center;flex:none}
+  .player .disc svg{width:22px;height:22px;fill:var(--navy-deep)}
+  .player .pl-row b{font-family:var(--ff-d);font-size:16px;color:#fff;display:block}
+  .player .pl-row span{font-size:12px;color:#aab2c9}
+  .player audio{width:100%;height:40px}
+  .lyrics{background:rgba(251,246,236,.97);border-radius:18px;padding:30px 32px;box-shadow:0 24px 50px rgba(10,16,34,.4)}
+  .lyrics .ly-k{color:var(--olive);font-weight:700;letter-spacing:.16em;text-transform:uppercase;font-size:11.5px}
+  .lyrics h3{font-family:var(--ff-d);color:var(--navy);font-size:24px;margin:6px 0 16px}
+  .lyrics .verse{font-family:var(--ff-d);color:#333a4d;font-size:16.5px;line-height:1.7;margin:0 0 16px;white-space:pre-line}
+  .lyrics .chorus{color:var(--navy);font-weight:600;font-style:italic}
+
+  /* contact */
+  .cinfo{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center}
+  .ci-list{display:grid;gap:16px}
+  .ci{display:flex;gap:16px;align-items:flex-start}
+  .ci .ic{width:46px;height:46px;border-radius:12px;background:var(--navy);display:grid;place-items:center;flex:none}
+  .ci .ic svg{width:22px;height:22px;stroke:#fff}
+  .ci b{display:block;color:var(--navy);font-family:var(--ff-d);font-size:16px}
+  .ci span,.ci a{color:#434a5e;font-size:14.5px}
+  .qrcard{display:flex;gap:18px;align-items:center;background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:16px 18px;margin-top:20px}
+  .qrcard img{width:108px;height:108px;border-radius:10px;flex:none;border:1px solid var(--line)}
+  .qrcard b{font-family:var(--ff-d);color:var(--navy);font-size:17px;display:block}
+  .qrcard span{color:var(--mute);font-size:13px}
+  .cta-band{background:linear-gradient(135deg,var(--olive),var(--olive2));color:#fff;border-radius:22px;padding:40px 36px;text-align:center}
+  .cta-band h3{color:#fff;font-size:26px;margin-bottom:8px}
+  .cta-band p{color:#f0f2e4;margin-bottom:20px}
+
+  footer{background:var(--navy-deep);color:#c7cee0;padding:50px 0 26px}
+  footer .grid{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:30px}
+  footer .brand b{color:#fff}
+  footer .brand span{color:var(--gold)}
+  footer h4{color:#fff;font-family:var(--ff-b);font-size:13px;letter-spacing:.1em;text-transform:uppercase;margin:0 0 12px}
+  footer a{color:#c7cee0;display:block;font-size:14px;margin-bottom:8px}
+  footer a:hover{color:var(--gold)}
+  .crisis{background:rgba(194,161,90,.14);border:1px solid rgba(194,161,90,.3);border-radius:12px;padding:14px 18px;margin:26px 0 0;font-size:13.5px;color:#e8ddc3}
+  .crisis b{color:var(--gold)}
+  .foot-base{border-top:1px solid rgba(255,255,255,.1);margin-top:24px;padding-top:18px;font-size:12.5px;color:#8a92ab;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;align-items:center}
+  .foot-base a{color:#8a92ab;display:inline;margin:0}
+  .foot-base a:hover{color:var(--gold)}
+
+  /* floating player */
+  .fplayer{position:fixed;right:max(16px,env(safe-area-inset-right));bottom:calc(16px + env(safe-area-inset-bottom));z-index:80;display:flex;align-items:center;gap:10px;background:rgba(20,29,54,.95);color:#fff;border:1px solid rgba(194,161,90,.4);border-radius:40px;padding:8px 16px 8px 8px;box-shadow:0 14px 34px rgba(10,16,34,.4);cursor:pointer;transition:.2s}
+  .fplayer:hover{transform:translateY(-2px)}
+  .fplayer .fbtn{width:40px;height:40px;border-radius:50%;background:var(--gold);display:grid;place-items:center;flex:none}
+  .fplayer .fbtn svg{width:20px;height:20px;fill:var(--navy-deep)}
+  .fplayer .ftx b{font-family:var(--ff-d);font-size:13.5px;display:block;line-height:1.1}
+  .fplayer .ftx span{font-size:11px;color:#c7cee0}
+  .fplayer .eq{display:none;margin-left:2px;height:16px}
+  .fplayer.on .eq{display:inline-flex}
+
+  /* modal + admin shared */
+  .ov-bg{position:fixed;inset:0;background:rgba(20,29,54,.6);backdrop-filter:blur(3px);display:none;align-items:flex-start;justify-content:center;padding:24px 16px;z-index:100;overflow:auto}
+  .ov-bg.open{display:flex}
+  .card-modal{background:var(--cream);border-radius:20px;max-width:540px;width:100%;padding:28px;position:relative;box-shadow:0 30px 70px rgba(10,16,34,.4)}
+  .card-modal.wide{max-width:680px}
+  .card-modal h3{font-size:23px;margin-bottom:4px}
+  .card-modal .sub{color:var(--mute);font-size:14px;margin-bottom:16px}
+  .card-modal .x{position:absolute;right:16px;top:14px;width:36px;height:36px;border-radius:50%;border:0;background:var(--beige2);color:var(--navy);font-size:20px;cursor:pointer}
+  .field{margin-bottom:12px}
+  label{display:block;font-size:13px;font-weight:600;color:var(--navy);margin-bottom:5px}
+  input,select,textarea{width:100%;border:1px solid var(--line);border-radius:10px;padding:11px 12px;font-size:16px;font-family:var(--ff-b);background:#fff;color:var(--ink)}
+  .row2{display:flex;gap:10px;flex-wrap:wrap}.row2 .field{flex:1;min-width:140px}
+  .msg{font-size:13.5px;font-weight:600;margin-top:8px;min-height:18px}
+  .link{color:var(--olive);font-weight:600;font-size:13.5px;cursor:pointer;display:inline-block;margin-top:10px}
+
+  /* admin */
+  .tabs{display:flex;gap:6px;background:var(--beige2);border-radius:12px;padding:5px;margin-bottom:18px;flex-wrap:wrap}
+  .tabs button{flex:1;min-width:90px;border:0;background:transparent;padding:10px 8px;border-radius:9px;font-weight:600;font-size:13.5px;color:var(--navy);cursor:pointer;font-family:var(--ff-b)}
+  .tabs button.active{background:#fff;box-shadow:0 2px 8px rgba(30,42,74,.08)}
+  .tabpane{display:none}.tabpane.active{display:block}
+  .admNote{background:rgba(194,161,90,.12);border:1px solid rgba(194,161,90,.35);border-radius:10px;padding:10px 12px;font-size:12.5px;color:#7a6322;margin-bottom:14px}
+  .photorow{display:flex;gap:12px;align-items:center;padding:10px;border:1px solid var(--line);border-radius:12px;margin-bottom:10px;background:#fff}
+  .photorow img{width:56px;height:56px;border-radius:9px;object-fit:cover;flex:none;background:var(--olive-soft)}
+  .photorow .pr-main{flex:1;min-width:0}
+  .photorow .pr-main b{font-size:14px;color:var(--navy);font-family:var(--ff-b);display:block}
+  .photorow .pr-main span{font-size:12px;color:var(--mute)}
+  .photorow label.up{margin:0;background:var(--navy);color:#fff;font-weight:600;font-size:12.5px;padding:9px 12px;border-radius:9px;cursor:pointer;white-space:nowrap}
+  .photorow input[type=file]{display:none}
+  .admSub{font-weight:700;color:var(--navy);font-family:var(--ff-d);font-size:16px;margin:14px 0 8px}
+
+  @media(max-width:980px){
+    nav.links,.navcta .ph{display:none}.burger{display:flex}
+    .hero .wrap{grid-template-columns:1fr;gap:28px;padding:44px 22px 52px}
+    .portrait{order:-1}
+    .about,.prov,.song .wrap,.cinfo{grid-template-columns:1fr;gap:28px}
+    .prov .pv-photo{max-width:320px}
+    .values{grid-template-columns:repeat(2,1fr)}
+    .svcs{grid-template-columns:repeat(2,1fr)}
+    .ins{grid-template-columns:1fr}
+    footer .grid{grid-template-columns:1fr 1fr}
+  }
+  @media(max-width:560px){
+    .sec{padding:52px 0}
+    .svcs,.values{grid-template-columns:1fr}
+    .trust{gap:20px}
+    .hero h1{font-size:clamp(30px,8vw,40px)}
+    footer .grid{grid-template-columns:1fr}
+    .cta .btn{flex:1 1 auto;justify-content:center}
+    .rcard{width:220px;height:300px}
+    .fplayer .ftx{display:none}
+  }
+  @media (prefers-reduced-motion: reduce){ .reel-track{animation:none!important} .eq i{animation:none;height:9px} }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <a class="brand" href="#top">
+      <span class="mark" id="brandMark"></span>
+      <span class="bt"><b>KAIROS</b><span>Mental Health</span></span>
+    </a>
+    <nav class="links">
+      <a href="#about">About</a><a href="#provider">Clinician</a><a href="#services">Services</a><a href="#coverage">Where We Care</a><a href="#conditions">We Treat</a><a href="#song">Our Song</a><a href="#contact">Contact</a>
+    </nav>
+    <div class="navcta">
+      <div class="ph">Call us<br><b class="j-phone">(555) 480‑2272</b></div>
+      <button class="btn btn-olive" onclick="openBook()">Book now</button>
+      <button class="burger" onclick="document.getElementById('mob').classList.toggle('open')"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+  <div class="mobmenu" id="mob">
+    <a href="#about" onclick="closeMob()">About</a><a href="#provider" onclick="closeMob()">Clinician</a><a href="#services" onclick="closeMob()">Services</a><a href="#coverage" onclick="closeMob()">Where We Care</a><a href="#conditions" onclick="closeMob()">We Treat</a><a href="#song" onclick="closeMob()">Our Song</a><a href="#contact" onclick="closeMob()">Contact</a>
+    <a href="#" onclick="closeMob();openBook();return false" style="color:var(--olive);font-weight:700">Book now →</a>
+  </div>
+</header>
+
+<section class="hero" id="top">
+  <div class="wrap">
+    <div>
+      <span class="eyebrow">Kairos Mental Health Services</span>
+      <h1>The <em>right moment</em> for your healing.</h1>
+      <p class="lead">Kairos — the opportune time. Compassionate psychiatric care and therapy for children, adolescents and adults, in person and by secure telehealth across Washington, Texas and beyond. Your moment to begin is now.</p>
+      <div class="cta">
+        <button class="btn btn-olive" onclick="openBook()">Book a consultation</button>
+        <a class="btn btn-ghost j-phone-link" href="tel:+15554802272">📞 <span class="j-phone">(555) 480‑2272</span></a>
+      </div>
+      <div class="songhint" id="songhint" onclick="startSong()">
+        <span class="eq"><i></i><i></i><i></i><i></i></span>
+        <span id="songhintTx">Turn on sound — tap to play our anthem, “Kairos”</span>
+      </div>
+      <div class="trust">
+        <div><b>Telehealth</b><span>&amp; in‑person visits</span></div>
+        <div><b>All ages</b><span>children · teens · adults</span></div>
+        <div><b>Same‑week</b><span>new‑patient openings</span></div>
+        <div><b>Insurance</b><span>&amp; self‑pay welcome</span></div>
+      </div>
+    </div>
+    <figure class="portrait" style="margin:0">
+      <div class="frame"><img src="assets/img/telehealth1.jpg" alt="Clinician during a secure telehealth visit" loading="eager"></div>
+      <figcaption class="cap"><b>A new season of care</b><span>Grounded, personal, and unhurried</span></figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="sec" id="about">
+  <div class="wrap about">
+    <div class="ph"><img src="assets/img/nature3.jpg" alt="Calm water at sunset" loading="lazy"></div>
+    <div>
+      <span class="eyebrow">About Kairos</span>
+      <h2>Care that meets you at the right time.</h2>
+      <p>In Greek, <em>kairos</em> means the opportune moment — the turning point where change becomes possible. That idea is at the heart of our practice. We believe healing happens when skilled, compassionate care meets a person exactly where, and when, they need it.</p>
+      <p>We provide thorough psychiatric evaluations, thoughtful medication management, and supportive therapy for children, adolescents and adults. Every visit is unhurried and collaborative, built around your goals, your story, and your pace.</p>
+      <div class="mission">
+        <h4>Our mission</h4>
+        <p>To make high‑quality, compassionate mental health care accessible and unhurried — meeting each person at their moment, and walking with them toward lasting well‑being.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROVIDER -->
+<section class="sec cream" id="provider">
+  <div class="wrap prov">
+    <div class="pv-photo" id="pvPhotoWrap">
+      <img id="pvPhoto" alt="" hidden>
+      <span class="pv-mono" id="pvMono">EO</span>
+      <div class="pv-badge"><b id="pvBadgeName">Ewoma Obaro</b><span id="pvBadgeCred">PMHNP</span></div>
+    </div>
+    <div>
+      <span class="eyebrow">Meet your clinician</span>
+      <h2 id="pvName">Ewoma Obaro, PMHNP</h2>
+      <div class="cred" id="pvCred">Psychiatric Mental Health Nurse Practitioner</div>
+      <p id="pvBio">Ewoma Obaro is a Psychiatric Mental Health Nurse Practitioner dedicated to compassionate, whole‑person care. She partners with each client to understand their story, clarify a diagnosis, and build a thoughtful plan — combining careful psychiatric evaluation and medication management with supportive, goal‑focused therapy. Her approach is warm, unhurried and collaborative, meeting people of all ages right where they are.</p>
+      <div class="pv-tags">
+        <span>Psychiatric Evaluations</span><span>Medication Management</span><span>Therapy &amp; Counseling</span><span>Children · Teens · Adults</span><span>Telehealth &amp; In‑Person</span>
+      </div>
+      <button class="btn btn-olive" onclick="openBook()">Book with Ewoma →</button>
+    </div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="wrap">
+    <div class="head"><div class="k">What we stand for</div><h2>Our values</h2><p>Four commitments that shape every conversation at Kairos.</p></div>
+    <div class="values">
+      <div class="value"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2" stroke-linecap="round"/></svg></div><b>Presence</b><span>Unhurried, attentive time for every person.</span></div>
+      <div class="value"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 21s-7-4.5-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 5.5-7 10-7 10Z" stroke-linejoin="round"/></svg></div><b>Compassion</b><span>Warmth and respect, always without judgment.</span></div>
+      <div class="value"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 3l2.5 5 5.5.8-4 3.9.9 5.5L12 21l-4.9 2.6.9-5.5-4-3.9 5.5-.8L12 3Z" stroke-linejoin="round"/></svg></div><b>Dignity</b><span>Your voice and choices lead the care.</span></div>
+      <div class="value"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M5 21V10l7-6 7 6v11" stroke-linejoin="round"/><path d="M9 21v-6h6v6" stroke-linejoin="round"/></svg></div><b>Hope</b><span>A steady belief that change is possible.</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec beige2" id="services">
+  <div class="wrap">
+    <div class="head"><div class="k">How we help</div><h2>Our services</h2><p>Comprehensive, evidence‑based care — delivered the way that fits your life.</p></div>
+    <div class="svcs">
+      <div class="svc"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M9 3h6l1 4H8l1-4Z" stroke-linejoin="round"/><rect x="5" y="7" width="14" height="14" rx="2"/><path d="M12 11v6M9 14h6" stroke-linecap="round"/></svg></div><h3>Psychiatric Evaluations</h3><p>Thorough diagnostic assessments to understand what you're experiencing and build the right plan.</p></div>
+      <div class="svc"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><rect x="3" y="8" width="13" height="8" rx="4"/><path d="M14 10l6-3M14 14l6 3" stroke-linecap="round"/></svg></div><h3>Medication Management</h3><p>Careful, ongoing prescribing and monitoring — adjusted collaboratively to how you feel.</p></div>
+      <div class="svc"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M4 5h16v11H7l-3 3V5Z" stroke-linejoin="round"/><path d="M8 9h8M8 12h5" stroke-linecap="round"/></svg></div><h3>Therapy &amp; Counseling</h3><p>Supportive, goal‑focused talk therapy for individuals navigating life's challenges.</p></div>
+      <div class="svc"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4" stroke-linecap="round"/></svg></div><h3>Telehealth &amp; In‑Person</h3><p>Secure video visits from home, or face‑to‑face — whichever is easier and more comfortable.</p></div>
+      <div class="svc"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="8" cy="8" r="3"/><circle cx="17" cy="9" r="2.3"/><path d="M3 20c0-3 2.5-5 5-5s5 2 5 5M14 20c0-2.2 1.5-3.6 3.5-3.6S21 17.8 21 20" stroke-linecap="round"/></svg></div><h3>Care for Every Age</h3><p>Children, adolescents and adults — family‑centered care across the whole lifespan.</p></div>
+      <div class="svc"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 3a6 6 0 0 1 6 6c0 4-6 12-6 12S6 13 6 9a6 6 0 0 1 6-6Z" stroke-linejoin="round"/><circle cx="12" cy="9" r="2"/></svg></div><h3>Wellness &amp; Crisis Support</h3><p>Stress, burnout and life transitions — plus guidance to the right help in urgent moments.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec navy" id="coverage">
+  <div class="wrap">
+    <div class="head"><div class="k">Where we care</div><h2>Telehealth, wherever you are</h2><p>Secure video visits reach you at home — in Washington, Texas and a growing list of states. Same warm care, from wherever you feel most comfortable.</p></div>
+  </div>
+  <div class="reel r1"><div class="reel-track" id="statesTrack"></div></div>
+  <div class="wrap"><p class="reelnote">Licensing varies by state and expands over time — tell us where you’re located when you book and we’ll confirm availability. Imagery is representative.</p></div>
+</section>
+
+<section class="sec beige2" id="conditions">
+  <div class="wrap">
+    <div class="head"><div class="k">Areas of focus</div><h2>What we treat</h2><p>If what you’re facing isn’t shown here, reach out — we’ll help you find the right support.</p></div>
+  </div>
+  <div class="reel r2"><div class="reel-track" id="condsTrack"></div></div>
+</section>
+
+<section class="song" id="song">
+  <div class="wrap">
+    <div>
+      <div class="head" style="text-align:left;margin:0 0 6px;max-width:none"><div class="k">Our song</div></div>
+      <h2>“Kairos”</h2>
+      <p class="intro">An anthem for the moment you decide to begin — and a reminder of all the ways we'll walk beside you. It starts playing as you arrive; tap below to replay it anytime.</p>
+      <div class="player">
+        <div class="pl-row">
+          <div class="disc"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7L8 5Z"/></svg></div>
+          <div><b>Kairos — The Anthem</b><span>Kairos Mental Health Services · original demo</span></div>
+        </div>
+        <audio id="song" controls preload="auto" src="assets/kairos-song.mp3"></audio>
+      </div>
+    </div>
+    <div class="lyrics">
+      <div class="ly-k">Lyrics</div>
+      <h3>Kairos</h3>
+      <p class="verse chorus">Kairos — this is your moment,
+the right time to begin.
+Kairos — we'll walk beside you,
+to the healing within.</p>
+      <p class="verse">When the nights feel heavy and the mornings hard to face,
+there's a door that is open, there's a calm and steady place —
+from the very first conversation to the care that sees you through:
+evaluation, medication, and therapy for you.</p>
+      <p class="verse">Anxiety and sorrow, the weight you shouldn't bear,
+depression, trauma, restless minds — we'll meet you right there.
+For the child and the grown, whether near or far away,
+in person or by screen, we are with you every day.</p>
+      <p class="verse chorus">Not someday, not later — the time is here and now;
+there's grace enough to help you heal, and hope to show you how.</p>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="insurance">
+  <div class="wrap">
+    <div class="head"><div class="k">Getting started</div><h2>Insurance &amp; payment</h2><p>We keep the first step simple — verify your benefits when you book.</p></div>
+    <div class="ins">
+      <div class="panel">
+        <h3>Insurance accepted</h3>
+        <p>We accept many major plans. Share your insurance when you book and we'll verify your benefits for you.</p>
+        <div class="chips"><span class="chip">Aetna</span><span class="chip">Blue Cross Blue Shield</span><span class="chip">Cigna</span><span class="chip">UnitedHealthcare</span><span class="chip">Optum</span><span class="chip">Oscar</span></div>
+      </div>
+      <div class="panel">
+        <h3>Self‑pay &amp; cards</h3>
+        <p>Prefer to pay directly? We welcome self‑pay clients with clear, upfront pricing.</p>
+        <ul class="pay-list">
+          <li><svg viewBox="0 0 24 24" fill="none"><path d="M5 12l4 4L19 7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Major credit &amp; debit cards</li>
+          <li><svg viewBox="0 0 24 24" fill="none"><path d="M5 12l4 4L19 7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>HSA / FSA accepted</li>
+          <li><svg viewBox="0 0 24 24" fill="none"><path d="M5 12l4 4L19 7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Transparent, upfront pricing</li>
+        </ul>
+        <button class="btn btn-navy" style="margin-top:16px" onclick="openBook()">Book &amp; verify benefits</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec cream" id="contact">
+  <div class="wrap">
+    <div class="head"><div class="k">Reach out</div><h2>Let's find your moment</h2><p>Questions or ready to begin? We're here.</p></div>
+    <div class="cinfo">
+      <div class="ci-list">
+        <div class="ci"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M4 5c0 9 6 15 15 15 1 0 1.8-.8 1.8-1.8v-2.5c0-.9-.7-1.6-1.6-1.7l-2.8-.3c-.6 0-1.1.3-1.4.8l-.8 1.3c-2.3-1.1-4.2-3-5.3-5.3l1.3-.8c.5-.3.8-.8.8-1.4l-.3-2.8C10.9 4.3 10.2 3.6 9.3 3.6H6.8C5.8 3.6 5 4.4 5 5.4Z" stroke-linejoin="round"/></svg></div><div><b>Call or text</b><a class="j-phone-link j-phone" href="tel:+15554802272">(555) 480‑2272</a></div></div>
+        <div class="ci"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M4 7l8 6 8-6" stroke-linecap="round"/></svg></div><div><b>Email</b><a class="j-email-link j-email" href="mailto:hello@kairosmentalhealthservices.com">hello@kairosmentalhealthservices.com</a></div></div>
+        <div class="ci"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 21s-7-5.5-7-11a7 7 0 0 1 14 0c0 5.5-7 11-7 11Z" stroke-linejoin="round"/><circle cx="12" cy="10" r="2.5"/></svg></div><div><b>Visits</b><span class="j-address">Secure telehealth &amp; in‑person by appointment</span></div></div>
+        <div class="ci"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M8 2v4M16 2v4M3 10h18" stroke-linecap="round"/></svg></div><div><b>Hours</b><span class="j-hours">Mon–Fri · 9:00 AM – 6:00 PM</span></div></div>
+        <div class="qrcard"><img src="assets/qr.png" alt="QR code to the Kairos website"><div><b>Scan to visit &amp; book</b><span>Point your phone camera here to open Kairos and request an appointment.</span></div></div>
+      </div>
+      <div class="cta-band">
+        <h3>Your moment is now.</h3>
+        <p>Book a confidential consultation and take the first step toward feeling like yourself again.</p>
+        <button class="btn btn-outline" onclick="openBook()">Book a consultation →</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="grid">
+      <div>
+        <div class="brand" style="margin-bottom:12px"><span class="mark" id="footMark"></span><span class="bt"><b style="font-family:var(--ff-d);font-size:18px;color:#fff">KAIROS</b><span style="color:var(--gold);font-size:10.5px;letter-spacing:.2em;text-transform:uppercase">Mental Health</span></span></div>
+        <p style="font-size:14px;max-width:34ch">Compassionate psychiatric care and therapy with Ewoma Obaro, PMHNP — meeting you at the right moment, for lasting well‑being.</p>
+      </div>
+      <div><h4>Explore</h4><a href="#about">About</a><a href="#provider">Your clinician</a><a href="#services">Services</a><a href="#coverage">Where we care</a><a href="#conditions">What we treat</a></div>
+      <div><h4>Get started</h4><a href="#insurance">Insurance &amp; payment</a><a href="#contact">Contact</a><a href="#" onclick="openBook();return false">Book a consultation</a><a href="#song">Our song</a></div>
+    </div>
+    <div class="crisis"><b>In crisis?</b> If you or someone you know is in immediate danger, call or text <b>988</b> (Suicide &amp; Crisis Lifeline) or dial 911. Kairos is not an emergency service.</div>
+    <div class="foot-base"><span>© <span id="yr"></span> Kairos Mental Health Services · kairosmentalhealthservices.com</span><span>Mock website · representative content · <a href="#" onclick="openAdmin();return false">Staff login</a></span></div>
+  </div>
+</footer>
+
+<div class="fplayer" id="fplayer" title="Play / pause our song" onclick="toggleSong()">
+  <span class="fbtn" id="fbtn"><svg id="ficon" viewBox="0 0 24 24"><path d="M8 5v14l11-7L8 5Z"/></svg></span>
+  <span class="ftx"><b>Our song: “Kairos”</b><span id="fstate">Tap to play</span></span>
+  <span class="eq"><i></i><i></i><i></i></span>
+</div>
+
+<!-- BOOK MODAL -->
+<div class="ov-bg" id="bookModal">
+  <div class="card-modal">
+    <button class="x" onclick="closeBook()">✕</button>
+    <h3>Book a consultation</h3>
+    <p class="sub">Tell us a little about you and we'll reach out to confirm your time.</p>
+    <div class="field"><label>Full name</label><input id="b_name" placeholder="Your name"></div>
+    <div class="row2"><div class="field"><label>Email</label><input id="b_email" type="email" placeholder="you@email.com"></div><div class="field"><label>Phone</label><input id="b_phone" placeholder="(555) 000‑0000"></div></div>
+    <div class="row2"><div class="field"><label>This visit is for</label><select id="b_for"><option>Myself</option><option>My child</option><option>A family member</option></select></div><div class="field"><label>Preferred date</label><input id="b_date" type="date"></div></div>
+    <div class="field"><label>State you’re located in</label><input id="b_state" placeholder="e.g. Washington, Texas"></div>
+    <div class="field"><label>Visit type</label><select id="b_visit"><option>Telehealth</option><option>In‑person</option><option>No preference</option></select></div>
+    <div class="field"><label>What brings you in? <span style="font-weight:400;color:var(--mute)">(optional)</span></label><textarea id="b_concern" rows="2" placeholder="A few words about what you're looking for"></textarea></div>
+    <button class="btn btn-olive" style="width:100%" onclick="submitBook()">Request appointment</button>
+    <div class="msg" id="bookMsg"></div>
+  </div>
+</div>
+
+<!-- ADMIN -->
+<div class="ov-bg" id="adminBg">
+  <div class="card-modal wide">
+    <button class="x" onclick="closeAdmin()">✕</button>
+
+    <div id="adLogin">
+      <h3>Staff login</h3>
+      <p class="sub">Manage your Kairos site — contact details, your photo, reel images and password — from any device.</p>
+      <div class="field"><label>Password</label><input id="adPass" type="password" placeholder="Enter password" onkeydown="if(event.key==='Enter')adminLogin()"></div>
+      <button class="btn btn-navy" style="width:100%" onclick="adminLogin()">Sign in</button>
+      <div class="msg" id="adLoginMsg"></div>
+      <span class="link" onclick="showForgot()">Forgot password?</span>
+    </div>
+
+    <div id="adForgot" hidden>
+      <h3>Reset your password</h3>
+      <p class="sub">We'll email a 6‑digit reset code to your recovery email.</p>
+      <div id="forgotStep1">
+        <div class="field"><label>Recovery email</label><input id="fgEmail" type="email" placeholder="you@email.com"></div>
+        <button class="btn btn-navy" style="width:100%" onclick="sendReset()">Email me a reset code</button>
+      </div>
+      <div id="forgotStep2" hidden>
+        <div class="field"><label>Reset code (from your email)</label><input id="fgCode" placeholder="6‑digit code" inputmode="numeric"></div>
+        <div class="field"><label>New password</label><input id="fgNew" type="password" placeholder="New password"></div>
+        <button class="btn btn-olive" style="width:100%" onclick="confirmReset()">Set new password</button>
+      </div>
+      <div class="msg" id="fgMsg"></div>
+      <span class="link" onclick="backToLogin()">← Back to sign in</span>
+    </div>
+
+    <div id="adPanel" hidden>
+      <h3 style="margin-bottom:2px">Kairos admin</h3>
+      <p class="sub">Changes save instantly on this device. <span id="syncNote"></span></p>
+      <div class="tabs">
+        <button class="active" data-tab="contact" onclick="adTab('contact')">Contact</button>
+        <button data-tab="provider" onclick="adTab('provider')">Clinician</button>
+        <button data-tab="photos" onclick="adTab('photos')">Reel photos</button>
+        <button data-tab="security" onclick="adTab('security')">Security</button>
+      </div>
+
+      <div class="tabpane active" id="tab-contact">
+        <div class="row2"><div class="field"><label>Phone</label><input id="s_phone"></div><div class="field"><label>Email</label><input id="s_email" type="email"></div></div>
+        <div class="field"><label>Visits / location line</label><input id="s_address"></div>
+        <div class="field"><label>Hours</label><input id="s_hours"></div>
+        <button class="btn btn-olive" onclick="saveContact()">Save contact</button>
+        <div class="msg" id="contactMsg"></div>
+      </div>
+
+      <div class="tabpane" id="tab-provider">
+        <div class="photorow">
+          <img id="pvThumb" alt="" src="">
+          <div class="pr-main"><b>Clinician headshot</b><span>Upload from your phone or computer (JPG/PNG).</span></div>
+          <label class="up">Upload<input type="file" accept="image/*" onchange="uploadHeadshot(this)"></label>
+        </div>
+        <div class="row2"><div class="field"><label>Name</label><input id="s_pvName"></div><div class="field"><label>Credential line</label><input id="s_pvCred"></div></div>
+        <div class="field"><label>Bio</label><textarea id="s_pvBio" rows="5"></textarea></div>
+        <button class="btn btn-olive" onclick="saveProvider()">Save clinician</button>
+        <span class="link" onclick="removeHeadshot()">Remove headshot (use monogram)</span>
+        <div class="msg" id="provMsg"></div>
+      </div>
+
+      <div class="tabpane" id="tab-photos">
+        <div class="admNote">Tap <b>Replace</b> on any card to upload a new photo from your phone gallery or camera. Updates appear immediately.</div>
+        <div class="admSub">“Where we care” reel (states)</div>
+        <div id="statesAdmin"></div>
+        <div class="admSub">“What we treat” reel (conditions)</div>
+        <div id="condsAdmin"></div>
+        <span class="link" onclick="resetPhotos()">Reset all reel photos to originals</span>
+        <div class="msg" id="photoMsg"></div>
+      </div>
+
+      <div class="tabpane" id="tab-security">
+        <div class="field"><label>Current password</label><input id="s_cur" type="password"></div>
+        <div class="row2"><div class="field"><label>New password</label><input id="s_new" type="password"></div><div class="field"><label>Confirm new password</label><input id="s_new2" type="password"></div></div>
+        <button class="btn btn-navy" onclick="changePw()">Update password</button>
+        <div class="msg" id="pwMsg"></div>
+        <hr style="border:0;border-top:1px solid var(--line);margin:18px 0">
+        <div class="field"><label>Recovery email (where reset codes are sent)</label><input id="s_recovery" type="email"></div>
+        <button class="btn btn-outline" onclick="saveRecovery()">Save recovery email</button>
+        <div class="msg" id="recMsg"></div>
+      </div>
+
+      <div style="margin-top:16px;text-align:right"><span class="link" onclick="adminLogout()">Sign out</span></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.getElementById('yr').textContent=new Date().getFullYear();
+
+  /* ---------- logo mark (inline SVG) ---------- */
+  function markSVG(stroke,hill){return '<svg viewBox="0 0 100 100" aria-hidden="true">'+
+    '<defs><clipPath id="kc'+stroke.replace("#","")+'"><circle cx="50" cy="50" r="42.5"/></clipPath></defs>'+
+    '<g clip-path="url(#kc'+stroke.replace("#","")+')">'+
+    '<path d="M6 63 Q33 76 52 65 T94 68 L94 96 L6 96 Z" fill="'+hill+'"/>'+
+    '<path d="M38 60 A12 12 0 0 1 62 60 Z" fill="#C2A15A"/>'+
+    '<g stroke="#C2A15A" stroke-width="2.4" stroke-linecap="round">'+
+    '<line x1="50" y1="43" x2="50" y2="36"/><line x1="40" y1="46" x2="36.5" y2="40.5"/>'+
+    '<line x1="60" y1="46" x2="63.5" y2="40.5"/><line x1="32.5" y1="51.5" x2="28" y2="47.5"/>'+
+    '<line x1="67.5" y1="51.5" x2="72" y2="47.5"/></g></g>'+
+    '<circle cx="50" cy="50" r="42.5" fill="none" stroke="'+stroke+'" stroke-width="4.5"/>'+
+    '<line x1="26" y1="60" x2="74" y2="60" stroke="'+stroke+'" stroke-width="3.2" stroke-linecap="round"/></svg>';}
+  document.getElementById('brandMark').innerHTML=markSVG('#1E2A4A','#5E6B3F');
+  document.getElementById('footMark').innerHTML=markSVG('#FFFFFF','#77854f');
+  (function(){var l=document.createElement('link');l.rel='icon';l.href='data:image/svg+xml,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" rx="20" fill="#1E2A4A"/>'+markSVG('#FFFFFF','#77854f').replace('<svg viewBox="0 0 100 100" aria-hidden="true">','<g transform="translate(8,8) scale(0.84)">').replace('</svg>','</g>')+'</svg>');document.head.appendChild(l);})();
+
+  /* ---------- settings / storage ---------- */
+  var LS='kairos_settings_v2', PWK='kairos_pw', RECK='kairos_recovery', RESET='kairos_reset';
+  var DEF={
+    phone:'(555) 480‑2272', email:'hello@kairosmentalhealthservices.com',
+    address:'Secure telehealth & in‑person by appointment', hours:'Mon–Fri · 9:00 AM – 6:00 PM',
+    pvName:'Ewoma Obaro, PMHNP', pvCred:'Psychiatric Mental Health Nurse Practitioner',
+    pvBio:document.getElementById('pvBio').textContent, headshot:'',
+    states:[['Washington','assets/img/land1.jpg'],['Texas','assets/img/land4.jpg'],['California','assets/img/land3.jpg'],['Florida','assets/img/nature3.jpg'],['Georgia','assets/img/land2.jpg'],['Arizona','assets/img/land1.jpg'],['Colorado','assets/img/land4.jpg'],['New York','assets/img/land3.jpg'],['North Carolina','assets/img/nature3.jpg'],['Virginia','assets/img/land2.jpg']],
+    conds:[['Anxiety','Worry, panic & unease','assets/img/land2.jpg'],['Depression','Low mood & loss of joy','assets/img/nature3.jpg'],['ADHD','Focus & attention','assets/img/land1.jpg'],['Bipolar Disorder','Mood highs & lows','assets/img/land4.jpg'],['PTSD & Trauma','Healing from the past','assets/img/land3.jpg'],['OCD','Intrusive thoughts','assets/img/land2.jpg'],['Insomnia','Rest & sleep','assets/img/nature3.jpg'],['Stress & Burnout','Overwhelm & fatigue','assets/img/land1.jpg'],['Grief & Loss','Moving through sorrow','assets/img/land4.jpg'],['Mood Disorders','Steadier days','assets/img/land3.jpg']]
+  };
+  function SET(){ try{var s=JSON.parse(localStorage.getItem(LS)); if(s) return Object.assign(JSON.parse(JSON.stringify(DEF)),s);}catch(e){} return JSON.parse(JSON.stringify(DEF)); }
+  function SAVE(s){ try{localStorage.setItem(LS,JSON.stringify(s));}catch(e){} applySettings(); }
+  function getPw(){ try{return localStorage.getItem(PWK)||'kairos2026';}catch(e){return 'kairos2026';} }
+  function setPw(p){ try{localStorage.setItem(PWK,p);}catch(e){} }
+  function getRecovery(){ try{return localStorage.getItem(RECK)||SET().email;}catch(e){return SET().email;} }
+
+  function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+  var pinTele='<span class="pin"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="12" rx="2"/><path d="M8 21h8" stroke-linecap="round"/></svg>Telehealth</span>';
+  function stateCard(s){return '<div class="rcard"><img src="'+esc(s[1])+'" alt="" loading="lazy"><div class="ov"></div>'+pinTele+'<div class="lab"><b>'+esc(s[0])+'</b><span>Telehealth available</span></div></div>';}
+  function condCard(c){return '<div class="rcard olive"><img src="'+esc(c[2])+'" alt="" loading="lazy"><div class="ov"></div><span class="pin">We treat</span><div class="lab"><b>'+esc(c[0])+'</b><span>'+esc(c[1])+'</span></div></div>';}
+
+  function applySettings(){
+    var s=SET();
+    document.querySelectorAll('.j-phone').forEach(function(e){e.textContent=s.phone;});
+    document.querySelectorAll('.j-phone-link').forEach(function(e){e.setAttribute('href','tel:'+s.phone.replace(/[^0-9+]/g,''));});
+    document.querySelectorAll('.j-email').forEach(function(e){e.textContent=s.email;});
+    document.querySelectorAll('.j-email-link').forEach(function(e){e.setAttribute('href','mailto:'+s.email);});
+    document.querySelectorAll('.j-address').forEach(function(e){e.textContent=s.address;});
+    document.querySelectorAll('.j-hours').forEach(function(e){e.textContent=s.hours;});
+    document.getElementById('pvName').textContent=s.pvName;
+    document.getElementById('pvCred').textContent=s.pvCred;
+    document.getElementById('pvBio').textContent=s.pvBio;
+    var parts=s.pvName.split(','); document.getElementById('pvBadgeName').textContent=parts[0].trim();
+    document.getElementById('pvBadgeCred').textContent=(parts[1]||'PMHNP').trim();
+    var mono=(parts[0].trim().split(/\s+/).map(function(w){return w[0];}).join('').slice(0,2)||'EO').toUpperCase();
+    document.getElementById('pvMono').textContent=mono;
+    var img=document.getElementById('pvPhoto');
+    if(s.headshot){img.src=s.headshot;img.hidden=false;document.getElementById('pvMono').hidden=true;}
+    else{img.hidden=true;document.getElementById('pvMono').hidden=false;}
+    // reels
+    var st=document.getElementById('statesTrack'); var sc=s.states.map(stateCard).join(''); st.innerHTML=sc+sc;
+    var ct=document.getElementById('condsTrack'); var cc=s.conds.map(condCard).join(''); ct.innerHTML=cc+cc;
+  }
+  applySettings();
+
+  /* ---------- song ---------- */
+  var song=document.getElementById('song');
+  var fplayer=document.getElementById('fplayer'), fstate=document.getElementById('fstate');
+  var ficon=document.getElementById('ficon'), hint=document.getElementById('songhint'), started=false;
+  var PLAY='<path d="M8 5v14l11-7L8 5Z"/>', PAUSE='<path d="M7 5h4v14H7zM13 5h4v14h-4z"/>';
+  function paintUI(){var playing=song&&!song.paused&&!song.ended;fplayer.classList.toggle('on',playing);ficon.innerHTML=playing?PAUSE:PLAY;fstate.textContent=playing?'Now playing':'Tap to play';if(playing&&hint)hint.style.display='none';}
+  if(song){song.addEventListener('play',paintUI);song.addEventListener('pause',paintUI);song.addEventListener('ended',paintUI);song.volume=0.85;}
+  function startSong(){if(!song)return;var p=song.play();if(p&&p.catch)p.catch(function(){});}
+  function toggleSong(){if(!song)return;if(song.paused)startSong();else song.pause();}
+  window.addEventListener('load',function(){setTimeout(startSong,250);});
+  function firstGesture(){if(started)return;started=true;if(song&&song.paused)startSong();['pointerdown','touchstart','keydown','scroll'].forEach(function(ev){window.removeEventListener(ev,firstGesture,true);});}
+  ['pointerdown','touchstart','keydown','scroll'].forEach(function(ev){window.addEventListener(ev,firstGesture,true);});
+
+  /* ---------- booking ---------- */
+  function openBook(){var m=document.getElementById('bookModal');m.classList.add('open');document.body.style.overflow='hidden';var d=document.getElementById('b_date');if(d&&!d.value)d.value=new Date(Date.now()+864e5).toISOString().slice(0,10);}
+  function closeBook(){document.getElementById('bookModal').classList.remove('open');document.body.style.overflow='';}
+  document.getElementById('bookModal').addEventListener('click',function(e){if(e.target===this)closeBook();});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'){closeBook();closeAdmin();}});
+  function closeMob(){document.getElementById('mob').classList.remove('open');}
+  function val(id){var el=document.getElementById(id);return el?el.value.trim():'';}
+  function submitBook(){
+    var m=document.getElementById('bookMsg');
+    if(!val('b_name')||!val('b_email')||!val('b_phone')){m.textContent='Please add your name, email and phone.';m.style.color='#c0392b';return;}
+    try{var bk=JSON.parse(localStorage.getItem('kairos_bookings')||'[]');bk.unshift({name:val('b_name'),email:val('b_email'),phone:val('b_phone'),for:val('b_for'),date:val('b_date'),state:val('b_state'),visit:val('b_visit'),concern:val('b_concern'),at:new Date().toISOString()});localStorage.setItem('kairos_bookings',JSON.stringify(bk));}catch(e){}
+    m.style.color='#5E6B3F';m.textContent='Thank you, '+val('b_name').split(' ')[0]+'! Your request is in — we’ll be in touch shortly. (Demo: saved locally.)';
+    setTimeout(closeBook,2600);
+  }
+
+  /* ---------- admin ---------- */
+  function openAdmin(){document.getElementById('adminBg').classList.add('open');document.body.style.overflow='hidden';showLogin();}
+  function closeAdmin(){document.getElementById('adminBg').classList.remove('open');document.body.style.overflow='';}
+  document.getElementById('adminBg').addEventListener('click',function(e){if(e.target===this)closeAdmin();});
+  if(location.hash==='#admin')setTimeout(openAdmin,300);
+  function show(id){['adLogin','adForgot','adPanel'].forEach(function(x){document.getElementById(x).hidden=(x!==id);});}
+  function showLogin(){show('adLogin');document.getElementById('adLoginMsg').textContent='';document.getElementById('adPass').value='';}
+  function showForgot(){show('adForgot');document.getElementById('forgotStep1').hidden=false;document.getElementById('forgotStep2').hidden=true;document.getElementById('fgMsg').textContent='';document.getElementById('fgEmail').value=getRecovery();}
+  function backToLogin(){showLogin();}
+  function adminLogin(){
+    var m=document.getElementById('adLoginMsg');
+    if(document.getElementById('adPass').value===getPw()){openPanel();}
+    else{m.style.color='#c0392b';m.textContent='Incorrect password. (Default: kairos2026 — change it under Security.)';}
+  }
+  function adminLogout(){showLogin();}
+  function openPanel(){
+    show('adPanel');
+    document.getElementById('syncNote').innerHTML='To publish changes for <b>all visitors</b>, ask us to connect the live backend.';
+    var s=SET();
+    s_phone.value=s.phone;s_email.value=s.email;s_address.value=s.address;s_hours.value=s.hours;
+    s_pvName.value=s.pvName;s_pvCred.value=s.pvCred;s_pvBio.value=s.pvBio;
+    document.getElementById('pvThumb').src=s.headshot||'assets/img/telehealth1.jpg';
+    document.getElementById('s_recovery').value=getRecovery();
+    renderPhotoAdmin(); adTab('contact');
+  }
+  function adTab(t){
+    document.querySelectorAll('.tabs button').forEach(function(b){b.classList.toggle('active',b.dataset.tab===t);});
+    document.querySelectorAll('.tabpane').forEach(function(p){p.classList.toggle('active',p.id==='tab-'+t);});
+  }
+  function flash(id,ok,txt){var m=document.getElementById(id);m.style.color=ok?'#5E6B3F':'#c0392b';m.textContent=txt;setTimeout(function(){if(m.textContent===txt)m.textContent='';},4000);}
+
+  function saveContact(){var s=SET();s.phone=s_phone.value.trim()||s.phone;s.email=s_email.value.trim()||s.email;s.address=s_address.value.trim();s.hours=s_hours.value.trim();SAVE(s);flash('contactMsg',true,'Contact details updated.');}
+  function saveProvider(){var s=SET();s.pvName=s_pvName.value.trim()||s.pvName;s.pvCred=s_pvCred.value.trim();s.pvBio=s_pvBio.value.trim()||s.pvBio;SAVE(s);flash('provMsg',true,'Clinician details updated.');}
+
+  function readImg(file,cb){ if(!file)return; if(file.size>6*1024*1024){flash('photoMsg',false,'Image is large (>6MB) — please pick a smaller one.');return;} var r=new FileReader();r.onload=function(){cb(r.result);};r.readAsDataURL(file); }
+  function uploadHeadshot(inp){ readImg(inp.files[0],function(d){var s=SET();s.headshot=d;SAVE(s);document.getElementById('pvThumb').src=d;flash('provMsg',true,'Headshot updated.');}); }
+  function removeHeadshot(){var s=SET();s.headshot='';SAVE(s);document.getElementById('pvThumb').src='assets/img/telehealth1.jpg';flash('provMsg',true,'Headshot removed — showing monogram.');}
+
+  function renderPhotoAdmin(){
+    var s=SET();
+    document.getElementById('statesAdmin').innerHTML=s.states.map(function(st,i){
+      return '<div class="photorow"><img src="'+esc(st[1])+'" alt=""><div class="pr-main"><b>'+esc(st[0])+'</b><span>Telehealth state card</span></div><label class="up">Replace<input type="file" accept="image/*" onchange="replacePhoto(\'states\','+i+',this)"></label></div>';
+    }).join('');
+    document.getElementById('condsAdmin').innerHTML=s.conds.map(function(c,i){
+      return '<div class="photorow"><img src="'+esc(c[2])+'" alt=""><div class="pr-main"><b>'+esc(c[0])+'</b><span>'+esc(c[1])+'</span></div><label class="up">Replace<input type="file" accept="image/*" onchange="replacePhoto(\'conds\','+i+',this)"></label></div>';
+    }).join('');
+  }
+  function replacePhoto(group,i,inp){ readImg(inp.files[0],function(d){var s=SET(); if(group==='states')s.states[i][1]=d; else s.conds[i][2]=d; SAVE(s); renderPhotoAdmin(); flash('photoMsg',true,'Photo updated.');}); }
+  function resetPhotos(){var s=SET();s.states=JSON.parse(JSON.stringify(DEF.states));s.conds=JSON.parse(JSON.stringify(DEF.conds));SAVE(s);renderPhotoAdmin();flash('photoMsg',true,'Reel photos reset to originals.');}
+
+  function changePw(){
+    var cur=document.getElementById('s_cur').value, nw=document.getElementById('s_new').value, nw2=document.getElementById('s_new2').value;
+    if(cur!==getPw())return flash('pwMsg',false,'Current password is incorrect.');
+    if(nw.length<4)return flash('pwMsg',false,'New password must be at least 4 characters.');
+    if(nw!==nw2)return flash('pwMsg',false,'New passwords do not match.');
+    setPw(nw);document.getElementById('s_cur').value=document.getElementById('s_new').value=document.getElementById('s_new2').value='';
+    flash('pwMsg',true,'Password updated.');
+  }
+  function saveRecovery(){var e=document.getElementById('s_recovery').value.trim();if(!/.+@.+\..+/.test(e))return flash('recMsg',false,'Enter a valid email.');try{localStorage.setItem(RECK,e);}catch(x){}flash('recMsg',true,'Recovery email saved.');}
+
+  /* forgot password -> email code via FormSubmit (keyless) */
+  function sendReset(){
+    var email=document.getElementById('fgEmail').value.trim(), m=document.getElementById('fgMsg');
+    if(email.toLowerCase()!==getRecovery().toLowerCase())return (m.style.color='#c0392b',m.textContent='That email is not on file as the recovery email.');
+    var code=(''+Math.floor(100000+Math.random()*900000));
+    try{localStorage.setItem(RESET,JSON.stringify({code:code,at:Date.now()}));}catch(e){}
+    m.style.color='#5E6B3F';m.textContent='Sending your reset code…';
+    fetch('https://formsubmit.co/ajax/'+encodeURIComponent(email),{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},
+      body:JSON.stringify({_subject:'Your Kairos admin reset code',_template:'box',message:'Your Kairos admin password reset code is: '+code+'  (valid for 30 minutes). If you did not request this, you can ignore this email.'})})
+      .then(function(r){return r.json();}).then(function(){
+        document.getElementById('forgotStep1').hidden=true;document.getElementById('forgotStep2').hidden=false;
+        m.style.color='#5E6B3F';m.textContent='Code sent to '+email+'. Check your inbox (and spam). First‑time use may ask you to confirm the address once.';
+      }).catch(function(){
+        document.getElementById('forgotStep1').hidden=true;document.getElementById('forgotStep2').hidden=false;
+        m.style.color='#9a7b1e';m.textContent='Could not reach email service. Your code is: '+code+' (enter it below).';
+      });
+  }
+  function confirmReset(){
+    var m=document.getElementById('fgMsg');
+    var rec; try{rec=JSON.parse(localStorage.getItem(RESET)||'null');}catch(e){rec=null;}
+    if(!rec||Date.now()-rec.at>30*60000)return (m.style.color='#c0392b',m.textContent='Code expired — please request a new one.');
+    if(document.getElementById('fgCode').value.trim()!==rec.code)return (m.style.color='#c0392b',m.textContent='Incorrect code.');
+    var nw=document.getElementById('fgNew').value; if(nw.length<4)return (m.style.color='#c0392b',m.textContent='New password must be at least 4 characters.');
+    setPw(nw); try{localStorage.removeItem(RESET);}catch(e){}
+    m.style.color='#5E6B3F';m.textContent='Password reset! You can sign in now.';
+    setTimeout(showLogin,1400);
+  }
+</script>
+</body>
+</html>
