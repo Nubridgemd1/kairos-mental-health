@@ -626,6 +626,9 @@ there's grace enough to help you heal, and hope to show you how.</p>
 
       <div class="tabpane" id="tab-photos">
         <div class="admNote">Tap <b>Replace</b> on any card to upload a new photo from your phone gallery or camera. Updates appear immediately.</div>
+        <div class="admSub">Hero reel (top of page)</div>
+        <div id="heroAdmin"></div>
+        <label class="up" style="display:inline-flex;margin:2px 0 12px">+ Add hero photo<input type="file" accept="image/*" onchange="addHero(this)"></label>
         <div class="admSub">“Where we care” reel (states)</div>
         <div id="statesAdmin"></div>
         <div class="admSub">“What we treat” reel (conditions)</div>
@@ -681,14 +684,16 @@ there's grace enough to help you heal, and hope to show you how.</p>
   document.getElementById('footMark').innerHTML=markSVG('#FFFFFF','#77854f');
   (function(){var l=document.createElement('link');l.rel='icon';l.href='data:image/svg+xml,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" rx="20" fill="#1E2A4A"/>'+markSVG('#FFFFFF','#77854f').replace('<svg viewBox="0 0 100 100" aria-hidden="true">','<g transform="translate(8,8) scale(0.84)">').replace('</svg>','</g>')+'</svg>');document.head.appendChild(l);})();
 
-  /* hero photo reel — flowing happy real-life photos */
-  (function(){
-    var HERO=['assets/img/hero1.jpg','assets/img/hero2.jpg','assets/img/hero3.jpg'];
+  /* hero photo reel — admin-managed, flowing happy photos */
+  var heroTimer=null;
+  function renderHero(s){
     var f=document.getElementById('heroReel'); if(!f)return;
-    f.innerHTML=HERO.map(function(src,i){return '<img src="'+src+'" alt="A warm moment of care at Kairos" class="'+(i===0?'on':'')+'">';}).join('');
+    var H=(s&&s.hero&&s.hero.length)?s.hero:['assets/img/hero1.jpg','assets/img/hero2.jpg','assets/img/hero3.jpg'];
+    f.innerHTML=H.map(function(src,i){return '<img src="'+String(src).replace(/"/g,'&quot;')+'" alt="A warm moment of care at Kairos" class="'+(i===0?'on':'')+'">';}).join('');
     var imgs=f.querySelectorAll('img'), idx=0;
-    if(imgs.length>1) setInterval(function(){ imgs[idx].classList.remove('on'); idx=(idx+1)%imgs.length; imgs[idx].classList.add('on'); }, 3600);
-  })();
+    if(heroTimer){clearInterval(heroTimer);heroTimer=null;}
+    if(imgs.length>1) heroTimer=setInterval(function(){ imgs[idx].classList.remove('on'); idx=(idx+1)%imgs.length; imgs[idx].classList.add('on'); }, 3600);
+  }
 
   /* ---------- settings / storage (server-backed via Cloudflare Worker) ---------- */
   var API='https://kairos-api.fern-swift.workers.dev';
@@ -700,6 +705,7 @@ there's grace enough to help you heal, and hope to show you how.</p>
     address:'Dickinson, TX · Secure telehealth & in‑person by appointment', hours:'Mon–Fri · 9:00 AM – 6:00 PM',
     pvName:'Ewoma Cynthia Obaro, PMHNP-BC', pvCred:'Psychiatric Mental Health Nurse Practitioner — Board Certified',
     pvBio:document.getElementById('pvBio').textContent, headshot:'',
+    hero:['assets/img/hero1.jpg','assets/img/hero2.jpg','assets/img/hero3.jpg'],
     states:[['Texas','assets/img/land4.jpg'],['Washington','assets/img/land1.jpg'],['California','assets/img/land3.jpg'],['Florida','assets/img/nature3.jpg'],['Georgia','assets/img/land2.jpg'],['Arizona','assets/img/land1.jpg'],['Colorado','assets/img/land4.jpg'],['New York','assets/img/land3.jpg'],['North Carolina','assets/img/nature3.jpg'],['Virginia','assets/img/land2.jpg']],
     conds:[['Anxiety','Worry, panic & unease','assets/img/land2.jpg'],['Depression','Low mood & loss of joy','assets/img/nature3.jpg'],['ADHD','Focus & attention','assets/img/land1.jpg'],['Bipolar Disorder','Mood highs & lows','assets/img/land4.jpg'],['PTSD & Trauma','Healing from the past','assets/img/land3.jpg'],['OCD','Intrusive thoughts','assets/img/land2.jpg'],['Insomnia','Rest & sleep','assets/img/nature3.jpg'],['Stress & Burnout','Overwhelm & fatigue','assets/img/land1.jpg'],['Grief & Loss','Moving through sorrow','assets/img/land4.jpg'],['Mood Disorders','Steadier days','assets/img/land3.jpg']]
   };
@@ -746,6 +752,7 @@ there's grace enough to help you heal, and hope to show you how.</p>
     // reels
     var st=document.getElementById('statesTrack'); var sc=s.states.map(stateCard).join(''); st.innerHTML=sc+sc;
     var ct=document.getElementById('condsTrack'); var cc=s.conds.map(condCard).join(''); ct.innerHTML=cc+cc;
+    renderHero(s);
   }
   applySettings();
   /* pull live, shared content for every visitor */
@@ -759,7 +766,7 @@ there's grace enough to help you heal, and hope to show you how.</p>
   var ficon=document.getElementById('ficon'), hint=document.getElementById('songhint'), started=false;
   var PLAY='<path d="M8 5v14l11-7L8 5Z"/>', PAUSE='<path d="M7 5h4v14H7zM13 5h4v14h-4z"/>';
   function paintUI(){var playing=song&&!song.paused&&!song.ended;fplayer.classList.toggle('on',playing);ficon.innerHTML=playing?PAUSE:PLAY;fstate.textContent=playing?'Now playing':'Tap to play';if(playing&&hint)hint.style.display='none';}
-  if(song){song.addEventListener('play',paintUI);song.addEventListener('pause',paintUI);song.addEventListener('ended',paintUI);song.volume=0.85;}
+  if(song){song.addEventListener('play',paintUI);song.addEventListener('pause',paintUI);song.addEventListener('ended',paintUI);song.volume=0.85;song.loop=true;}
   function startSong(){ if(!song)return; try{ var p=song.play(); if(p&&p.then){ p.then(cleanupGesture).catch(function(){}); } }catch(e){} }
   function toggleSong(){ if(!song)return; if(song.paused)startSong(); else song.pause(); }
   var GEST=['click','pointerdown','touchend','keydown'];
@@ -837,6 +844,10 @@ there's grace enough to help you heal, and hope to show you how.</p>
 
   function renderPhotoAdmin(){
     var s=STATE;
+    var H=s.hero||DEF.hero;
+    document.getElementById('heroAdmin').innerHTML=H.map(function(src,i){
+      return '<div class="photorow"><img src="'+esc(src)+'" alt=""><div class="pr-main"><b>Hero photo '+(i+1)+'</b><span>Top-of-page reel</span></div><label class="up">Replace<input type="file" accept="image/*" onchange="replaceHero('+i+',this)"></label>'+(H.length>1?' <button class="cchip" style="background:#f3dede;color:#a33" onclick="removeHero('+i+')">Remove</button>':'')+'</div>';
+    }).join('');
     document.getElementById('statesAdmin').innerHTML=s.states.map(function(st,i){
       return '<div class="photorow"><img src="'+esc(st[1])+'" alt=""><div class="pr-main"><b>'+esc(st[0])+'</b><span>Telehealth state card</span></div><label class="up">Replace<input type="file" accept="image/*" onchange="replacePhoto(\'states\','+i+',this)"></label></div>';
     }).join('');
@@ -846,7 +857,12 @@ there's grace enough to help you heal, and hope to show you how.</p>
   }
   function replacePhoto(group,i,inp){ flash('photoMsg',true,'Uploading…'); readImg(inp.files[0],function(d){ doUpload(d,function(url){setPhoto(group,i,url);},function(d2){setPhoto(group,i,d2);}); }); }
   function setPhoto(group,i,v){ var s=STATE; if(group==='states')s.states[i][1]=v; else s.conds[i][2]=v; SAVE(s,'photoMsg'); renderPhotoAdmin(); }
-  function resetPhotos(){var s=STATE;s.states=clone(DEF.states);s.conds=clone(DEF.conds);SAVE(s,'photoMsg');renderPhotoAdmin();}
+  function resetPhotos(){var s=STATE;s.states=clone(DEF.states);s.conds=clone(DEF.conds);s.hero=clone(DEF.hero);SAVE(s,'photoMsg');renderPhotoAdmin();}
+  function replaceHero(i,inp){ flash('photoMsg',true,'Uploading…'); readImg(inp.files[0],function(d){ doUpload(d,function(url){setHero(i,url);},function(d2){setHero(i,d2);}); }); }
+  function setHero(i,v){ var s=STATE; if(!s.hero)s.hero=clone(DEF.hero); s.hero[i]=v; SAVE(s,'photoMsg'); renderPhotoAdmin(); }
+  function addHero(inp){ flash('photoMsg',true,'Uploading…'); readImg(inp.files[0],function(d){ doUpload(d,function(url){pushHero(url);},function(d2){pushHero(d2);}); }); }
+  function pushHero(v){ var s=STATE; if(!s.hero)s.hero=clone(DEF.hero); s.hero.push(v); SAVE(s,'photoMsg'); renderPhotoAdmin(); }
+  function removeHero(i){ var s=STATE; if(!s.hero)s.hero=clone(DEF.hero); if(s.hero.length<=1){flash('photoMsg',false,'Keep at least one hero photo.');return;} s.hero.splice(i,1); SAVE(s,'photoMsg'); renderPhotoAdmin(); }
 
   function changePw(){
     var cur=document.getElementById('s_cur').value, nw=document.getElementById('s_new').value, nw2=document.getElementById('s_new2').value;
