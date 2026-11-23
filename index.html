@@ -435,7 +435,7 @@
           <div class="disc"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7L8 5Z"/></svg></div>
           <div><b>Kairos — The Anthem</b><span>Kairos Mental Health Services · original song</span></div>
         </div>
-        <audio id="song" controls preload="auto" src="assets/kairos-song.mp3"></audio>
+        <audio id="songAudio" controls preload="auto" src="assets/kairos-song.mp3"></audio>
       </div>
     </div>
     <div class="lyrics">
@@ -744,7 +744,7 @@ there's grace enough to help you heal, and hope to show you how.</p>
   }).catch(function(){});
 
   /* ---------- song ---------- */
-  var song=document.getElementById('song');
+  var song=document.getElementById('songAudio');
   var fplayer=document.getElementById('fplayer'), fstate=document.getElementById('fstate');
   var ficon=document.getElementById('ficon'), hint=document.getElementById('songhint'), started=false;
   var PLAY='<path d="M8 5v14l11-7L8 5Z"/>', PAUSE='<path d="M7 5h4v14H7zM13 5h4v14h-4z"/>';
