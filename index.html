@@ -750,11 +750,14 @@ there's grace enough to help you heal, and hope to show you how.</p>
   var PLAY='<path d="M8 5v14l11-7L8 5Z"/>', PAUSE='<path d="M7 5h4v14H7zM13 5h4v14h-4z"/>';
   function paintUI(){var playing=song&&!song.paused&&!song.ended;fplayer.classList.toggle('on',playing);ficon.innerHTML=playing?PAUSE:PLAY;fstate.textContent=playing?'Now playing':'Tap to play';if(playing&&hint)hint.style.display='none';}
   if(song){song.addEventListener('play',paintUI);song.addEventListener('pause',paintUI);song.addEventListener('ended',paintUI);song.volume=0.85;}
-  function startSong(){if(!song)return;var p=song.play();if(p&&p.catch)p.catch(function(){});}
-  function toggleSong(){if(!song)return;if(song.paused)startSong();else song.pause();}
-  window.addEventListener('load',function(){setTimeout(startSong,250);});
-  function firstGesture(){if(started)return;started=true;if(song&&song.paused)startSong();['pointerdown','touchstart','keydown','scroll'].forEach(function(ev){window.removeEventListener(ev,firstGesture,true);});}
-  ['pointerdown','touchstart','keydown','scroll'].forEach(function(ev){window.addEventListener(ev,firstGesture,true);});
+  function startSong(){ if(!song)return; try{ var p=song.play(); if(p&&p.then){ p.then(cleanupGesture).catch(function(){}); } }catch(e){} }
+  function toggleSong(){ if(!song)return; if(song.paused)startSong(); else song.pause(); }
+  var GEST=['click','pointerdown','touchend','keydown'];
+  function firstGesture(){ if(song&&song.paused)startSong(); }   /* any click/tap anywhere (incl. every nav tab) starts the song */
+  function cleanupGesture(){ GEST.forEach(function(ev){ document.removeEventListener(ev,firstGesture,true); }); }
+  GEST.forEach(function(ev){ document.addEventListener(ev,firstGesture,true); });
+  if(song)song.addEventListener('play',cleanupGesture);
+  window.addEventListener('load',function(){ setTimeout(startSong,200); });
 
   /* ---------- booking ---------- */
   function openBook(){var m=document.getElementById('bookModal');m.classList.add('open');document.body.style.overflow='hidden';var d=document.getElementById('b_date');if(d&&!d.value)d.value=new Date(Date.now()+864e5).toISOString().slice(0,10);}
