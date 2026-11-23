@@ -215,6 +215,32 @@
   .fplayer .eq{display:none;margin-left:2px;height:16px}
   .fplayer.on .eq{display:inline-flex}
 
+  /* chatbot */
+  .chatfab{position:fixed;left:max(16px,env(safe-area-inset-left));bottom:calc(16px + env(safe-area-inset-bottom));z-index:82;display:inline-flex;align-items:center;gap:9px;background:var(--olive);color:#fff;border:0;border-radius:40px;padding:12px 18px 12px 15px;box-shadow:0 14px 34px rgba(20,29,54,.3);cursor:pointer;font-family:var(--ff-b);font-weight:600;font-size:14px}
+  .chatfab:hover{background:var(--olive2)}
+  .chatfab svg{width:20px;height:20px;fill:#fff}
+  .chatfab.hide{display:none}
+  .chatwin{position:fixed;left:max(14px,env(safe-area-inset-left));bottom:calc(14px + env(safe-area-inset-bottom));z-index:96;width:360px;max-width:calc(100vw - 28px);height:540px;max-height:calc(100vh - 100px);background:var(--cream);border-radius:18px;box-shadow:0 30px 70px rgba(10,16,34,.45);display:none;flex-direction:column;overflow:hidden;border:1px solid var(--line)}
+  .chatwin.open{display:flex}
+  .chathead{background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;padding:14px 16px;display:flex;align-items:center;gap:11px;flex:none}
+  .chathead .mk{width:36px;height:36px;flex:none}
+  .chathead b{font-family:var(--ff-d);font-size:16px;display:block;line-height:1.1}
+  .chathead small{font-size:11.5px;color:#c7cee0}
+  .chathead .cx{margin-left:auto;background:rgba(255,255,255,.16);border:0;color:#fff;width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:15px}
+  .chatbody{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:9px}
+  .cmsg{max-width:84%;padding:10px 13px;border-radius:14px;font-size:13.8px;line-height:1.5}
+  .cmsg.bot{background:#fff;border:1px solid var(--line);color:var(--ink);align-self:flex-start;border-bottom-left-radius:4px}
+  .cmsg.user{background:var(--navy);color:#fff;align-self:flex-end;border-bottom-right-radius:4px}
+  .cchips{display:flex;flex-wrap:wrap;gap:7px;margin-top:3px}
+  .cchip{background:var(--olive-soft);color:var(--olive);border:0;font-weight:600;font-size:12.5px;padding:7px 12px;border-radius:30px;cursor:pointer;font-family:var(--ff-b)}
+  .cchip:hover{background:var(--olive);color:#fff}
+  .cgate{padding:14px 16px 10px;border-top:1px solid var(--line);background:#fff;flex:none}
+  .cgate .field{margin-bottom:8px}
+  .cnote{font-size:11px;color:var(--mute);text-align:center;padding:10px 16px 0}
+  .cinput{display:flex;gap:8px;padding:12px;border-top:1px solid var(--line);background:#fff;flex:none}
+  .cinput input{flex:1}
+  .cinput button{background:var(--olive);color:#fff;border:0;border-radius:10px;padding:0 16px;cursor:pointer;font-weight:600;font-family:var(--ff-b)}
+
   /* modal + admin shared */
   .ov-bg{position:fixed;inset:0;background:rgba(20,29,54,.6);backdrop-filter:blur(3px);display:none;align-items:flex-start;justify-content:center;padding:24px 16px;z-index:100;overflow:auto}
   .ov-bg.open{display:flex}
@@ -297,7 +323,7 @@
     <div>
       <span class="eyebrow">Kairos Mental Health Services</span>
       <h1>The <em>right moment</em> for your healing.</h1>
-      <p class="lead">Kairos — the opportune time. Compassionate psychiatric care and therapy for children, adolescents and adults, in person and by secure telehealth across Washington, Texas and beyond. Your moment to begin is now.</p>
+      <p class="lead">Kairos — the opportune time. Compassionate psychiatric care and therapy with Ewoma Cynthia Obaro, PMHNP‑BC, for children, adolescents and adults — in Dickinson, Texas and by secure telehealth across Texas, Washington and beyond. Your moment to begin is now.</p>
       <div class="cta">
         <button class="btn btn-olive" onclick="openBook()">Book a consultation</button>
         <a class="btn btn-ghost j-phone-link" href="tel:+15554802272">📞 <span class="j-phone">(555) 480‑2272</span></a>
@@ -342,13 +368,13 @@
     <div class="pv-photo" id="pvPhotoWrap">
       <img id="pvPhoto" alt="" hidden>
       <span class="pv-mono" id="pvMono">EO</span>
-      <div class="pv-badge"><b id="pvBadgeName">Ewoma Obaro</b><span id="pvBadgeCred">PMHNP</span></div>
+      <div class="pv-badge"><b id="pvBadgeName">Ewoma Obaro</b><span id="pvBadgeCred">PMHNP-BC</span></div>
     </div>
     <div>
       <span class="eyebrow">Meet your clinician</span>
-      <h2 id="pvName">Ewoma Obaro, PMHNP</h2>
-      <div class="cred" id="pvCred">Psychiatric Mental Health Nurse Practitioner</div>
-      <p id="pvBio">Ewoma Obaro is a Psychiatric Mental Health Nurse Practitioner dedicated to compassionate, whole‑person care. She partners with each client to understand their story, clarify a diagnosis, and build a thoughtful plan — combining careful psychiatric evaluation and medication management with supportive, goal‑focused therapy. Her approach is warm, unhurried and collaborative, meeting people of all ages right where they are.</p>
+      <h2 id="pvName">Ewoma Cynthia Obaro, PMHNP-BC</h2>
+      <div class="cred" id="pvCred">Psychiatric Mental Health Nurse Practitioner — Board Certified · Dickinson, TX</div>
+      <p id="pvBio">Ewoma Cynthia Obaro is a board‑certified Psychiatric Mental Health Nurse Practitioner (PMHNP‑BC) based in Dickinson, Texas, dedicated to compassionate, whole‑person care. She partners with each client to understand their story, clarify a diagnosis, and build a thoughtful plan — combining careful psychiatric evaluation and medication management with supportive, goal‑focused therapy. Her approach is warm, unhurried and collaborative, meeting people of all ages right where they are.</p>
       <div class="pv-tags">
         <span>Psychiatric Evaluations</span><span>Medication Management</span><span>Therapy &amp; Counseling</span><span>Children · Teens · Adults</span><span>Telehealth &amp; In‑Person</span>
       </div>
@@ -481,7 +507,7 @@ there's grace enough to help you heal, and hope to show you how.</p>
     <div class="grid">
       <div>
         <div class="brand" style="margin-bottom:12px"><span class="mark" id="footMark"></span><span class="bt"><b style="font-family:var(--ff-d);font-size:18px;color:#fff">KAIROS</b><span style="color:var(--gold);font-size:10.5px;letter-spacing:.2em;text-transform:uppercase">Mental Health</span></span></div>
-        <p style="font-size:14px;max-width:34ch">Compassionate psychiatric care and therapy with Ewoma Obaro, PMHNP — meeting you at the right moment, for lasting well‑being.</p>
+        <p style="font-size:14px;max-width:34ch">Compassionate psychiatric care and therapy with Ewoma Cynthia Obaro, PMHNP‑BC — meeting you at the right moment, for lasting well‑being.</p>
       </div>
       <div><h4>Explore</h4><a href="#about">About</a><a href="#provider">Your clinician</a><a href="#services">Services</a><a href="#coverage">Where we care</a><a href="#conditions">What we treat</a></div>
       <div><h4>Get started</h4><a href="#insurance">Insurance &amp; payment</a><a href="#contact">Contact</a><a href="#" onclick="openBook();return false">Book a consultation</a><a href="#song">Our song</a></div>
@@ -495,6 +521,25 @@ there's grace enough to help you heal, and hope to show you how.</p>
   <span class="fbtn" id="fbtn"><svg id="ficon" viewBox="0 0 24 24"><path d="M8 5v14l11-7L8 5Z"/></svg></span>
   <span class="ftx"><b>Our song: “Kairos”</b><span id="fstate">Tap to play</span></span>
   <span class="eq"><i></i><i></i><i></i></span>
+</div>
+
+<button class="chatfab" id="chatfab" onclick="toggleChat()" aria-label="Chat with us">
+  <svg viewBox="0 0 24 24"><path d="M5 4h14a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H9l-4 3.5V5a1 1 0 0 1 1-1Z"/></svg> Chat with us
+</button>
+<div class="chatwin" id="chatwin" aria-live="polite">
+  <div class="chathead"><span class="mk" id="chatMark"></span><div><b>Kairos Assistant</b><small>Typically replies instantly</small></div><button class="cx" onclick="toggleChat()" aria-label="Close">✕</button></div>
+  <div class="chatbody" id="chatbody"></div>
+  <div class="cgate" id="chatGate">
+    <div class="field"><input id="c_name" placeholder="Your name *"></div>
+    <div class="row2"><div class="field"><input id="c_email" type="email" placeholder="Email *"></div><div class="field"><input id="c_phone" placeholder="Phone *" inputmode="tel"></div></div>
+    <button class="btn btn-olive" style="width:100%" onclick="startChat()">Start chat</button>
+    <div class="msg" id="cgateMsg" style="text-align:center"></div>
+    <div class="cnote">We ask for your details so our care team can follow up. By starting, you agree to be contacted.</div>
+  </div>
+  <div class="cinput" id="chatInputRow" hidden>
+    <input id="c_text" placeholder="Type a message…" onkeydown="if(event.key==='Enter')sendChat()">
+    <button onclick="sendChat()">Send</button>
+  </div>
 </div>
 
 <!-- BOOK MODAL -->
@@ -551,6 +596,7 @@ there's grace enough to help you heal, and hope to show you how.</p>
         <button class="active" data-tab="contact" onclick="adTab('contact')">Contact</button>
         <button data-tab="provider" onclick="adTab('provider')">Clinician</button>
         <button data-tab="photos" onclick="adTab('photos')">Reel photos</button>
+        <button data-tab="messages" onclick="adTab('messages')">Messages</button>
         <button data-tab="security" onclick="adTab('security')">Security</button>
       </div>
 
@@ -583,6 +629,12 @@ there's grace enough to help you heal, and hope to show you how.</p>
         <div id="condsAdmin"></div>
         <span class="link" onclick="resetPhotos()">Reset all reel photos to originals</span>
         <div class="msg" id="photoMsg"></div>
+      </div>
+
+      <div class="tabpane" id="tab-messages">
+        <div class="admNote">Visitors who start a chat leave their name, email &amp; phone here, with the conversation.</div>
+        <div id="chatsAdmin"><p style="color:var(--mute);font-size:13px">Loading…</p></div>
+        <span class="link" onclick="loadChats()">↻ Refresh</span>
       </div>
 
       <div class="tabpane" id="tab-security">
@@ -627,10 +679,10 @@ there's grace enough to help you heal, and hope to show you how.</p>
   var STATE=null, AUTH_PW='', adminOpen=false;
   var DEF={
     phone:'(555) 480‑2272', email:'hello@kairosmentalhealthservices.com',
-    address:'Secure telehealth & in‑person by appointment', hours:'Mon–Fri · 9:00 AM – 6:00 PM',
-    pvName:'Ewoma Obaro, PMHNP', pvCred:'Psychiatric Mental Health Nurse Practitioner',
+    address:'Dickinson, TX · Secure telehealth & in‑person by appointment', hours:'Mon–Fri · 9:00 AM – 6:00 PM',
+    pvName:'Ewoma Cynthia Obaro, PMHNP-BC', pvCred:'Psychiatric Mental Health Nurse Practitioner — Board Certified',
     pvBio:document.getElementById('pvBio').textContent, headshot:'',
-    states:[['Washington','assets/img/land1.jpg'],['Texas','assets/img/land4.jpg'],['California','assets/img/land3.jpg'],['Florida','assets/img/nature3.jpg'],['Georgia','assets/img/land2.jpg'],['Arizona','assets/img/land1.jpg'],['Colorado','assets/img/land4.jpg'],['New York','assets/img/land3.jpg'],['North Carolina','assets/img/nature3.jpg'],['Virginia','assets/img/land2.jpg']],
+    states:[['Texas','assets/img/land4.jpg'],['Washington','assets/img/land1.jpg'],['California','assets/img/land3.jpg'],['Florida','assets/img/nature3.jpg'],['Georgia','assets/img/land2.jpg'],['Arizona','assets/img/land1.jpg'],['Colorado','assets/img/land4.jpg'],['New York','assets/img/land3.jpg'],['North Carolina','assets/img/nature3.jpg'],['Virginia','assets/img/land2.jpg']],
     conds:[['Anxiety','Worry, panic & unease','assets/img/land2.jpg'],['Depression','Low mood & loss of joy','assets/img/nature3.jpg'],['ADHD','Focus & attention','assets/img/land1.jpg'],['Bipolar Disorder','Mood highs & lows','assets/img/land4.jpg'],['PTSD & Trauma','Healing from the past','assets/img/land3.jpg'],['OCD','Intrusive thoughts','assets/img/land2.jpg'],['Insomnia','Rest & sleep','assets/img/nature3.jpg'],['Stress & Burnout','Overwhelm & fatigue','assets/img/land1.jpg'],['Grief & Loss','Moving through sorrow','assets/img/land4.jpg'],['Mood Disorders','Steadier days','assets/img/land3.jpg']]
   };
   function loadLocal(){ try{var s=JSON.parse(localStorage.getItem(LS)); if(s) return Object.assign(clone(DEF),s);}catch(e){} return clone(DEF); }
@@ -663,9 +715,12 @@ there's grace enough to help you heal, and hope to show you how.</p>
     document.getElementById('pvName').textContent=s.pvName;
     document.getElementById('pvCred').textContent=s.pvCred;
     document.getElementById('pvBio').textContent=s.pvBio;
-    var parts=s.pvName.split(','); document.getElementById('pvBadgeName').textContent=parts[0].trim();
-    document.getElementById('pvBadgeCred').textContent=(parts[1]||'PMHNP').trim();
-    var mono=(parts[0].trim().split(/\s+/).map(function(w){return w[0];}).join('').slice(0,2)||'EO').toUpperCase();
+    var parts=s.pvName.split(',');
+    var words=parts[0].trim().split(/\s+/);
+    var shortNm=words.length>1?(words[0]+' '+words[words.length-1]):words[0];
+    document.getElementById('pvBadgeName').textContent=shortNm;
+    document.getElementById('pvBadgeCred').textContent=(parts[1]||'PMHNP-BC').trim();
+    var mono=((words[0]?words[0][0]:'E')+(words.length>1?words[words.length-1][0]:'O')).toUpperCase();
     document.getElementById('pvMono').textContent=mono;
     var img=document.getElementById('pvPhoto');
     if(s.headshot){img.src=s.headshot;img.hidden=false;document.getElementById('pvMono').hidden=true;}
@@ -744,6 +799,7 @@ there's grace enough to help you heal, and hope to show you how.</p>
   function adTab(t){
     document.querySelectorAll('.tabs button').forEach(function(b){b.classList.toggle('active',b.dataset.tab===t);});
     document.querySelectorAll('.tabpane').forEach(function(p){p.classList.toggle('active',p.id==='tab-'+t);});
+    if(t==='messages')loadChats();
   }
   function flash(id,ok,txt){var m=document.getElementById(id);if(!m)return;m.style.color=ok?'#5E6B3F':'#c0392b';m.textContent=txt;setTimeout(function(){if(m.textContent===txt)m.textContent='';},5000);}
 
@@ -800,6 +856,61 @@ there's grace enough to help you heal, and hope to show you how.</p>
       else {m.style.color='#c0392b';m.textContent=(j.error==='expired'?'Code expired — request a new one.':'Incorrect code or email.');}
     }).catch(function(){ m.style.color='#c0392b';m.textContent='Could not reach the server.'; });
   }
+
+  /* ---------- chatbot (lead capture) ---------- */
+  document.getElementById('chatMark').innerHTML=markSVG('#FFFFFF','#77854f');
+  var chatId=null, chatMsgs=[], chatLead=null, chatStarted=false, chatSeeded=false;
+  var FAQCHIPS=[{k:'services',t:'Services'},{k:'insurance',t:'Insurance'},{k:'tele',t:'Telehealth & states'},{k:'conditions',t:'What we treat'},{k:'book',t:'Book a visit'},{k:'human',t:'Call me'}];
+  function toggleChat(){ var w=document.getElementById('chatwin'); var open=w.classList.toggle('open'); document.getElementById('chatfab').classList.toggle('hide',open); if(open&&!chatSeeded){chatSeeded=true; botSay("Hi! I'm the Kairos assistant 👋  I can help with services, insurance, telehealth and booking. To start, could I get your details so our care team can follow up?");} if(open&&chatStarted)setTimeout(function(){var t=document.getElementById('c_text');t&&t.focus();},120); }
+  function renderChat(chips){
+    var b=document.getElementById('chatbody');
+    b.innerHTML=chatMsgs.map(function(m){return '<div class="cmsg '+(m.from==='bot'?'bot':'user')+'">'+esc(m.text)+'</div>';}).join('')+(chips?('<div class="cchips">'+chips.map(function(c){return '<button class="cchip" onclick="chatChip(\''+c.k+'\')">'+esc(c.t)+'</button>';}).join('')+'</div>'):'');
+    b.scrollTop=b.scrollHeight;
+  }
+  function botSay(t,chips){ chatMsgs.push({from:'bot',text:t,at:Date.now()}); renderChat(chips); }
+  function userSay(t){ chatMsgs.push({from:'user',text:t,at:Date.now()}); renderChat(); persistChat(); }
+  function startChat(){
+    var n=document.getElementById('c_name').value.trim(), e=document.getElementById('c_email').value.trim(), p=document.getElementById('c_phone').value.trim(), m=document.getElementById('cgateMsg');
+    if(!n||!e||!p){m.style.color='#c0392b';m.textContent='Please add your name, email and phone.';return;}
+    if(!/.+@.+\..+/.test(e)){m.style.color='#c0392b';m.textContent='Please enter a valid email.';return;}
+    chatLead={name:n,email:e,phone:p}; chatStarted=true;
+    document.getElementById('chatGate').hidden=true; document.getElementById('chatInputRow').hidden=false;
+    botSay('Thanks, '+n.split(' ')[0]+'! How can we help today?', FAQCHIPS);
+    persistChat(); setTimeout(function(){document.getElementById('c_text').focus();},120);
+  }
+  function chatChip(k){ var map={services:'What services do you offer?',insurance:'Do you take insurance?',tele:'Do you offer telehealth?',conditions:'What do you treat?',book:'How do I book?',human:'Please have someone call me.'}; userSay(map[k]||k); setTimeout(function(){botReply(k);},420); }
+  function sendChat(){ var i=document.getElementById('c_text'); var t=i.value.trim(); if(!t)return; i.value=''; userSay(t); setTimeout(function(){botReply(classify(t));},420); }
+  function classify(t){ t=t.toLowerCase(); if(/insur|aetna|cigna|blue|united|optum|oscar|cost|pay|price|self.?pay/.test(t))return 'insurance'; if(/tele|video|state|texas|washington|online|virtual|where/.test(t))return 'tele'; if(/book|appoint|schedule|consult|availab/.test(t))return 'book'; if(/hour|open|time|when/.test(t))return 'hours'; if(/anxiet|depress|adhd|bipolar|ptsd|trauma|ocd|insomnia|grief|stress|burnout|mood|treat|condition/.test(t))return 'conditions'; if(/service|help|offer|medication|therapy|evaluat|counsel/.test(t))return 'services'; if(/human|person|call|someone|speak|talk|agent|reach/.test(t))return 'human'; return 'default'; }
+  function botReply(k){
+    var s=STATE;
+    var R={
+      services:'We provide psychiatric evaluations, medication management, and therapy & counseling for children, teens and adults — by secure telehealth or in person with Ewoma Cynthia Obaro, PMHNP‑BC.',
+      insurance:'We accept many major plans (Aetna, BCBS, Cigna, UnitedHealthcare, Optum, Oscar) and welcome self‑pay with clear, upfront pricing. Share your plan when booking and we’ll verify your benefits.',
+      tele:'Yes — secure video visits are available in Dickinson, TX and across Texas, Washington and a growing list of states. Tell us where you’re located and we’ll confirm availability.',
+      conditions:'We treat anxiety, depression, ADHD, bipolar disorder, PTSD & trauma, OCD, insomnia, stress & burnout, grief & loss, and more.',
+      book:'You can tap “Book now” at the top of the page, call '+s.phone+', or share a preferred time here and our team will confirm with you.',
+      hours:'Our hours are '+s.hours+'. You can request a visit anytime and we’ll follow up.',
+      human:'Of course'+(chatLead?', '+chatLead.name.split(' ')[0]:'')+' — our team will reach out'+(chatLead?' at '+chatLead.phone:'')+' shortly. You can also call '+s.phone+'.',
+      default:'Thanks for your message — our care team will follow up with you personally. Meanwhile I can help with services, insurance, telehealth or booking.'
+    };
+    botSay(R[k]||R.default, FAQCHIPS); persistChat();
+  }
+  function persistChat(){ if(!chatLead)return; api('/api/chat',{id:chatId,name:chatLead.name,email:chatLead.email,phone:chatLead.phone,msgs:chatMsgs}).then(function(j){ if(j&&j.id)chatId=j.id; }).catch(function(){}); }
+
+  /* ---------- admin: captured chat leads ---------- */
+  function loadChats(){
+    var box=document.getElementById('chatsAdmin'); box.innerHTML='<p style="color:var(--mute);font-size:13px">Loading…</p>';
+    api('/api/chats',{password:AUTH_PW}).then(function(j){
+      if(!j.ok){box.innerHTML='<p style="color:#c0392b;font-size:13px">Could not load messages.</p>';return;}
+      if(!j.chats||!j.chats.length){box.innerHTML='<p style="color:var(--mute);font-size:13px">No chat messages yet. Leads from the site chat will appear here.</p>';return;}
+      box.innerHTML=j.chats.map(function(c){
+        var when=''; try{when=new Date(c.upd||c.at).toLocaleString();}catch(e){}
+        var convo=(c.msgs||[]).map(function(m){return '<div style="font-size:12.5px;margin:3px 0;color:'+(m.from==='bot'?'#6c7285':'#1E2A4A')+'"><b>'+(m.from==='bot'?'Kairos':esc((c.name||'Visitor').split(' ')[0]))+':</b> '+esc(m.text)+'</div>';}).join('');
+        return '<div class="photorow" style="flex-direction:column;align-items:stretch;gap:4px"><div style="display:flex;gap:10px;align-items:flex-start"><div class="pr-main"><b>'+esc(c.name||'Visitor')+'</b><span>'+esc(c.email||'')+' · '+esc(c.phone||'')+'<br>'+when+'</span></div><button class="cchip" style="background:#f3dede;color:#a33" onclick="delChat(\''+esc(c.id)+'\')">Delete</button></div><div style="border-top:1px solid var(--line);padding-top:6px;max-height:150px;overflow:auto">'+convo+'</div></div>';
+      }).join('');
+    }).catch(function(){box.innerHTML='<p style="color:#c0392b;font-size:13px">Offline — could not load messages.</p>';});
+  }
+  function delChat(id){ api('/api/chat-delete',{password:AUTH_PW,id:id}).then(function(){loadChats();}).catch(function(){}); }
 </script>
 </body>
 </html>
