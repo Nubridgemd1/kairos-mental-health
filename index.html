@@ -798,18 +798,26 @@ there's grace enough to help you heal, and hope to show you how.</p>
   /* ---------- song ---------- */
   var song=document.getElementById('songAudio');
   var fplayer=document.getElementById('fplayer'), fstate=document.getElementById('fstate');
-  var ficon=document.getElementById('ficon'), hint=document.getElementById('songhint'), started=false;
+  var ficon=document.getElementById('ficon'), hint=document.getElementById('songhint');
   var PLAY='<path d="M8 5v14l11-7L8 5Z"/>', PAUSE='<path d="M7 5h4v14H7zM13 5h4v14h-4z"/>';
-  function paintUI(){var playing=song&&!song.paused&&!song.ended;fplayer.classList.toggle('on',playing);ficon.innerHTML=playing?PAUSE:PLAY;fstate.textContent=playing?'Now playing':'Tap to play';if(playing&&hint)hint.style.display='none';}
-  if(song){song.addEventListener('play',paintUI);song.addEventListener('pause',paintUI);song.addEventListener('ended',paintUI);song.volume=0.85;song.loop=true;}
-  function startSong(){ if(!song)return; try{ var p=song.play(); if(p&&p.then){ p.then(cleanupGesture).catch(function(){}); } }catch(e){} }
-  function toggleSong(){ if(!song)return; if(song.paused)startSong(); else song.pause(); }
-  var GEST=['click','pointerdown','touchend','keydown'];
-  function firstGesture(){ if(song&&song.paused)startSong(); }   /* any click/tap anywhere (incl. every nav tab) starts the song */
+  function audible(){ return song && !song.paused && !song.muted && !song.ended; }
+  function paintUI(){
+    var on=audible(), going=song&&!song.paused&&!song.ended;
+    fplayer.classList.toggle('on',on);
+    ficon.innerHTML=going?PAUSE:PLAY;
+    fstate.textContent=on?'Now playing':(going?'Tap for sound':'Tap to play');
+    if(on&&hint)hint.style.display='none';
+  }
+  if(song){ ['play','pause','ended','volumechange'].forEach(function(e){song.addEventListener(e,paintUI);}); song.volume=0.85; song.loop=true; }
+  var GEST=['pointerdown','touchend','click','keydown','scroll'];
   function cleanupGesture(){ GEST.forEach(function(ev){ document.removeEventListener(ev,firstGesture,true); }); }
+  function unmutePlay(){ if(!song)return; song.muted=false; try{ var p=song.play(); if(p&&p.then)p.then(cleanupGesture).catch(function(){}); }catch(e){} paintUI(); }
+  function startSong(){ unmutePlay(); }
+  function toggleSong(){ if(!song)return; if(song.paused||song.muted){ unmutePlay(); } else { song.pause(); } }
+  function firstGesture(){ unmutePlay(); }   /* first tap/scroll/click anywhere turns on sound */
   GEST.forEach(function(ev){ document.addEventListener(ev,firstGesture,true); });
-  if(song)song.addEventListener('play',cleanupGesture);
-  window.addEventListener('load',function(){ setTimeout(startSong,200); });
+  /* start the song the moment they arrive — muted autoplay is allowed on all devices; it unmutes on first touch */
+  window.addEventListener('load',function(){ if(!song)return; song.muted=true; var p=song.play(); if(p&&p.catch)p.catch(function(){}); setTimeout(function(){ if(song.paused){ try{ song.play(); }catch(e){} } },400); });
 
   /* ---------- booking ---------- */
   function openBook(){var m=document.getElementById('bookModal');m.classList.add('open');document.body.style.overflow='hidden';var d=document.getElementById('b_date');if(d&&!d.value)d.value=new Date(Date.now()+864e5).toISOString().slice(0,10);}
