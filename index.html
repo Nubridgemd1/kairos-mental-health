@@ -173,7 +173,7 @@
   /* song */
   .song{background:linear-gradient(135deg,var(--navy-deep),var(--navy));color:#fff;position:relative;overflow:hidden}
   .song::after{content:"";position:absolute;right:-10%;top:-30%;width:60%;height:160%;background:radial-gradient(circle,rgba(194,161,90,.16),transparent 60%);pointer-events:none}
-  .song .wrap{position:relative;z-index:1;display:grid;grid-template-columns:1fr 1.1fr;gap:46px;align-items:center}
+  .song .wrap{position:relative;z-index:1;display:grid;grid-template-columns:1fr;gap:46px;align-items:center;max-width:760px}
   .song .k{color:var(--gold);font-weight:700;letter-spacing:.16em;text-transform:uppercase;font-size:12.5px}
   .song h2{color:#fff;font-size:clamp(28px,4vw,44px);margin:10px 0 12px}
   .song p.intro{color:#c7cee0;font-size:16px;max-width:44ch}
@@ -479,24 +479,6 @@
         </div>
         <audio id="songAudio" controls preload="auto" src="assets/kairos-song.mp3"></audio>
       </div>
-    </div>
-    <div class="lyrics">
-      <div class="ly-k">Lyrics</div>
-      <h3>Kairos</h3>
-      <p class="verse chorus">Kairos — this is your moment,
-the right time to begin.
-Kairos — we'll walk beside you,
-to the healing within.</p>
-      <p class="verse">When the nights feel heavy and the mornings hard to face,
-there's a door that is open, there's a calm and steady place —
-from the very first conversation to the care that sees you through:
-evaluation, medication, and therapy for you.</p>
-      <p class="verse">Anxiety and sorrow, the weight you shouldn't bear,
-depression, trauma, restless minds — we'll meet you right there.
-For the child and the grown, whether near or far away,
-in person or by screen, we are with you every day.</p>
-      <p class="verse chorus">Not someday, not later — the time is here and now;
-there's grace enough to help you heal, and hope to show you how.</p>
     </div>
   </div>
 </section>
