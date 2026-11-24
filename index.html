@@ -147,6 +147,7 @@
   @keyframes scrollL{from{transform:translateX(0)}to{transform:translateX(-50%)}}
   .rcard{position:relative;width:258px;height:338px;border-radius:18px;overflow:hidden;flex:none;box-shadow:0 16px 34px rgba(20,29,54,.16);background:#1b2440}
   .rcard img{width:100%;height:100%;object-fit:cover}
+.rcard.soon img{filter:grayscale(.32) brightness(.9)}
   .rcard .ov{position:absolute;inset:0;background:linear-gradient(to top,rgba(20,29,54,.9) 6%,rgba(20,29,54,.1) 58%,rgba(20,29,54,.4))}
   .rcard.olive .ov{background:linear-gradient(to top,rgba(39,46,26,.92) 6%,rgba(94,107,63,.12) 58%,rgba(39,46,26,.35))}
   .rcard .lab{position:absolute;left:16px;right:16px;bottom:15px;color:#fff;z-index:1}
@@ -750,7 +751,7 @@ there's grace enough to help you heal, and hope to show you how.</p>
     pvName:'Ewoma Cynthia Obaro, PMHNP-BC', pvCred:'Psychiatric Mental Health Nurse Practitioner — Board Certified',
     pvBio:document.getElementById('pvBio').textContent, headshot:'',
     hero:['assets/img/hero1.jpg','assets/img/hero2.jpg','assets/img/hero3.jpg','assets/img/hero4.jpg'],
-    states:[['Texas','assets/img/land4.jpg'],['Washington','assets/img/land1.jpg'],['California','assets/img/land3.jpg'],['Florida','assets/img/nature3.jpg'],['Georgia','assets/img/land2.jpg'],['Arizona','assets/img/land1.jpg'],['Colorado','assets/img/land4.jpg'],['New York','assets/img/land3.jpg'],['North Carolina','assets/img/nature3.jpg'],['Virginia','assets/img/land2.jpg']],
+    states:[['Texas','assets/img/land4.jpg','live'],['Washington','assets/img/land1.jpg','live'],['California','assets/img/land3.jpg','soon'],['Arizona','assets/img/land1.jpg','soon'],['Oregon','assets/img/land2.jpg','soon']],
     conds:[['Anxiety','Worry, panic & unease','assets/img/land2.jpg'],['Depression','Low mood & loss of joy','assets/img/nature3.jpg'],['ADHD','Focus & attention','assets/img/land1.jpg'],['Bipolar Disorder','Mood highs & lows','assets/img/land4.jpg'],['PTSD & Trauma','Healing from the past','assets/img/land3.jpg'],['OCD','Intrusive thoughts','assets/img/land2.jpg'],['Insomnia','Rest & sleep','assets/img/nature3.jpg'],['Stress & Burnout','Overwhelm & fatigue','assets/img/land1.jpg'],['Grief & Loss','Moving through sorrow','assets/img/land4.jpg'],['Mood Disorders','Steadier days','assets/img/land3.jpg']]
   };
   function loadLocal(){ try{var s=JSON.parse(localStorage.getItem(LS)); if(s) return Object.assign(clone(DEF),s);}catch(e){} return clone(DEF); }
@@ -769,7 +770,9 @@ there's grace enough to help you heal, and hope to show you how.</p>
 
   function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
   var pinTele='<span class="pin"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="12" rx="2"/><path d="M8 21h8" stroke-linecap="round"/></svg>Telehealth</span>';
-  function stateCard(s){return '<div class="rcard"><img src="'+esc(s[1])+'" alt="" loading="lazy"><div class="ov"></div>'+pinTele+'<div class="lab"><b>'+esc(s[0])+'</b><span>Telehealth available</span></div></div>';}
+  function stateCard(s){var soon=(s[2]==='soon');
+    var pin=soon?'<span class="pin" style="background:rgba(194,161,90,.96);color:#1b2440">Coming soon</span>':pinTele;
+    return '<div class="rcard'+(soon?' soon':'')+'"><img src="'+esc(s[1])+'" alt="" loading="lazy"><div class="ov"></div>'+pin+'<div class="lab"><b>'+esc(s[0])+'</b><span>'+(soon?'Coming soon':'Telehealth available')+'</span></div></div>';}
   function condCard(c){return '<div class="rcard olive"><img src="'+esc(c[2])+'" alt="" loading="lazy"><div class="ov"></div><span class="pin">We treat</span><div class="lab"><b>'+esc(c[0])+'</b><span>'+esc(c[1])+'</span></div></div>';}
 
   function applySettings(){
@@ -911,7 +914,7 @@ there's grace enough to help you heal, and hope to show you how.</p>
       return '<div class="photorow"><img src="'+esc(src)+'" alt=""><div class="pr-main"><b>Hero photo '+(i+1)+'</b><span>Top-of-page reel</span></div><label class="up">Replace<input type="file" accept="image/*" onchange="replaceHero('+i+',this)"></label>'+(H.length>1?' <button class="cchip" style="background:#f3dede;color:#a33" onclick="removeHero('+i+')">Remove</button>':'')+'</div>';
     }).join('');
     document.getElementById('statesAdmin').innerHTML=s.states.map(function(st,i){
-      return '<div class="photorow"><img src="'+esc(st[1])+'" alt=""><div class="pr-main"><b>'+esc(st[0])+'</b><span>Telehealth state card</span></div><label class="up">Replace<input type="file" accept="image/*" onchange="replacePhoto(\'states\','+i+',this)"></label></div>';
+      return '<div class="photorow"><img src="'+esc(st[1])+'" alt=""><div class="pr-main"><b>'+esc(st[0])+'</b><span>'+(st[2]==='soon'?'Coming soon':'Telehealth available')+'</span></div><label class="up">Replace<input type="file" accept="image/*" onchange="replacePhoto(\'states\','+i+',this)"></label></div>';
     }).join('');
     document.getElementById('condsAdmin').innerHTML=s.conds.map(function(c,i){
       return '<div class="photorow"><img src="'+esc(c[2])+'" alt=""><div class="pr-main"><b>'+esc(c[0])+'</b><span>'+esc(c[1])+'</span></div><label class="up">Replace<input type="file" accept="image/*" onchange="replacePhoto(\'conds\','+i+',this)"></label></div>';
