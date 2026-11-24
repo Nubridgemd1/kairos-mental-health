@@ -169,6 +169,20 @@
   .pay-list{list-style:none;margin:14px 0 0;padding:0}
   .pay-list li{display:flex;align-items:center;gap:10px;padding:7px 0;font-size:14.5px;color:#434a5e}
   .pay-list svg{width:20px;height:20px;stroke:var(--olive);flex:none}
+  /* self-pay checkout */
+  .sp-item{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:13px 0;border-top:1px solid var(--line)}
+  .sp-item:first-child{border-top:0}
+  .sp-main b{display:block;color:var(--navy);font-weight:600;font-size:15.5px}
+  .sp-main span{font-size:12.5px;color:var(--mute)}
+  .sp-right{display:flex;align-items:center;gap:14px;flex:none}
+  .sp-price{font-family:var(--ff-d);font-weight:700;color:var(--navy);font-size:20px}
+  .sp-pay{padding:9px 16px;font-size:13.5px;min-height:auto;border-radius:30px}
+  .sp-note{font-size:12px;color:var(--mute);margin-top:12px;display:flex;align-items:center;gap:7px;line-height:1.4}
+  .paybox{margin-top:16px;padding-top:16px;border-top:1px solid var(--line)}
+  .paybox .pb-h{font-weight:600;color:var(--navy);margin-bottom:8px;font-size:14.5px}
+  .paybanner{position:fixed;left:50%;top:16px;transform:translateX(-50%);z-index:200;background:#1E2A4A;color:#fff;padding:14px 20px;border-radius:12px;box-shadow:0 14px 36px rgba(0,0,0,.32);font-weight:600;font-size:14px;max-width:92vw;text-align:center}
+  .paybanner.err{background:#8a3b2e}
+  @media(max-width:480px){.sp-item{flex-direction:column;align-items:flex-start;gap:8px}.sp-right{width:100%;justify-content:space-between}}
 
   /* song */
   .song{background:linear-gradient(135deg,var(--navy-deep),var(--navy));color:#fff;position:relative;overflow:hidden}
@@ -494,13 +508,9 @@
       </div>
       <div class="panel">
         <h3>Self‑pay &amp; cards</h3>
-        <p>Prefer to pay directly? We welcome self‑pay clients with clear, upfront pricing.</p>
-        <ul class="pay-list">
-          <li><svg viewBox="0 0 24 24" fill="none"><path d="M5 12l4 4L19 7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Major credit &amp; debit cards</li>
-          <li><svg viewBox="0 0 24 24" fill="none"><path d="M5 12l4 4L19 7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>HSA / FSA accepted</li>
-          <li><svg viewBox="0 0 24 24" fill="none"><path d="M5 12l4 4L19 7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Transparent, upfront pricing</li>
-        </ul>
-        <button class="btn btn-navy" style="margin-top:16px" onclick="openBook()">Book &amp; verify benefits</button>
+        <p>Prefer to pay directly? Clear, upfront pricing — pay securely by card, HSA or FSA.</p>
+        <div id="selfpayList"></div>
+        <div class="sp-note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;flex:none"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3" stroke-linecap="round"/></svg>Secure checkout by Stripe · HSA / FSA cards accepted · receipt emailed</div>
       </div>
     </div>
   </div>
@@ -580,6 +590,11 @@
     <div class="field"><label>What brings you in? <span style="font-weight:400;color:var(--mute)">(optional)</span></label><textarea id="b_concern" rows="2" placeholder="A few words about what you're looking for"></textarea></div>
     <button class="btn btn-olive" style="width:100%" onclick="submitBook()">Request appointment</button>
     <div class="msg" id="bookMsg"></div>
+    <div class="paybox">
+      <div class="pb-h">Paying out of pocket? Pay securely now</div>
+      <div id="bookPay"></div>
+      <div class="sp-note">Secured by Stripe · uses the name &amp; email above · or just request an appointment and we’ll arrange payment.</div>
+    </div>
   </div>
 </div>
 
@@ -734,7 +749,8 @@
     pvBio:document.getElementById('pvBio').textContent, headshot:'',
     hero:['assets/img/hero1.jpg','assets/img/hero2.jpg','assets/img/hero3.jpg','assets/img/hero4.jpg'],
     states:[['Texas','assets/img/land4.jpg','live'],['Washington','assets/img/land1.jpg','live'],['California','assets/img/land3.jpg','soon'],['Arizona','assets/img/land1.jpg','soon'],['Oregon','assets/img/land2.jpg','soon']],
-    conds:[['Anxiety','Worry, panic & unease','assets/img/land2.jpg'],['Depression','Low mood & loss of joy','assets/img/nature3.jpg'],['ADHD','Focus & attention','assets/img/land1.jpg'],['Bipolar Disorder','Mood highs & lows','assets/img/land4.jpg'],['PTSD & Trauma','Healing from the past','assets/img/land3.jpg'],['OCD','Intrusive thoughts','assets/img/land2.jpg'],['Insomnia','Rest & sleep','assets/img/nature3.jpg'],['Stress & Burnout','Overwhelm & fatigue','assets/img/land1.jpg'],['Grief & Loss','Moving through sorrow','assets/img/land4.jpg'],['Mood Disorders','Steadier days','assets/img/land3.jpg']]
+    conds:[['Anxiety','Worry, panic & unease','assets/img/land2.jpg'],['Depression','Low mood & loss of joy','assets/img/nature3.jpg'],['ADHD','Focus & attention','assets/img/land1.jpg'],['Bipolar Disorder','Mood highs & lows','assets/img/land4.jpg'],['PTSD & Trauma','Healing from the past','assets/img/land3.jpg'],['OCD','Intrusive thoughts','assets/img/land2.jpg'],['Insomnia','Rest & sleep','assets/img/nature3.jpg'],['Stress & Burnout','Overwhelm & fatigue','assets/img/land1.jpg'],['Grief & Loss','Moving through sorrow','assets/img/land4.jpg'],['Mood Disorders','Steadier days','assets/img/land3.jpg']],
+    selfpay:[{id:'eval',label:'Initial Psychiatric Evaluation',desc:'60–90 min · new patients',amount:25000},{id:'followup',label:'Follow‑Up & Medication Management',desc:'25–30 min visit',amount:15000},{id:'therapy',label:'Therapy Session',desc:'50 min',amount:15000}]
   };
   function loadLocal(){ try{var s=JSON.parse(localStorage.getItem(LS)); if(s) return Object.assign(clone(DEF),s);}catch(e){} return clone(DEF); }
   function cacheLocal(){ try{localStorage.setItem(LS,JSON.stringify(STATE));}catch(e){} }
@@ -782,7 +798,34 @@
     var st=document.getElementById('statesTrack'); var sc=s.states.map(stateCard).join(''); st.innerHTML=sc+sc;
     var ct=document.getElementById('condsTrack'); var cc=s.conds.map(condCard).join(''); ct.innerHTML=cc+cc;
     renderHero(s);
+    renderSelfpay(s);
   }
+  /* ---------- self-pay Stripe checkout ---------- */
+  function money(cents){ var n=(Number(cents)||0)/100; return '$'+(n%1===0? n.toFixed(0) : n.toFixed(2)); }
+  function selfpayHTML(list){ return (list||[]).map(function(it){
+      return '<div class="sp-item"><div class="sp-main"><b>'+esc(it.label)+'</b>'+(it.desc?'<span>'+esc(it.desc)+'</span>':'')+'</div>'+
+        '<div class="sp-right"><div class="sp-price">'+money(it.amount)+'</div>'+
+        '<button class="btn btn-olive sp-pay" onclick="payFor(\''+esc(it.id)+'\',this)">Pay securely</button></div></div>';
+    }).join(''); }
+  function renderSelfpay(s){ var list=(s&&s.selfpay&&s.selfpay.length)?s.selfpay:(DEF.selfpay||[]);
+    var a=document.getElementById('selfpayList'); if(a)a.innerHTML=selfpayHTML(list);
+    var b=document.getElementById('bookPay'); if(b)b.innerHTML=selfpayHTML(list); }
+  function payFor(service, btn){
+    var name=val('b_name')||'', email=val('b_email')||'', label='';
+    if(btn){ label=btn.textContent; btn.disabled=true; btn.textContent='Starting…'; }
+    fetch(API+'/api/checkout',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({service:service,name:name,email:email})})
+      .then(function(r){return r.json();}).then(function(j){
+        if(j&&j.url){ window.location.href=j.url; return; }
+        if(btn){ btn.disabled=false; btn.textContent=label; }
+        payBanner(j&&j.error==='not-configured' ? 'Online card payment isn’t switched on yet — please call us to pay.' : 'Sorry, we couldn’t start secure checkout. Please try again or call us.', true);
+      }).catch(function(){ if(btn){ btn.disabled=false; btn.textContent=label; } payBanner('Network error — please try again or call us.', true); });
+  }
+  function payBanner(text, isErr){ var d=document.createElement('div'); d.className='paybanner'+(isErr?' err':''); d.textContent=text; document.body.appendChild(d);
+    setTimeout(function(){ d.style.transition='opacity .5s'; d.style.opacity='0'; setTimeout(function(){ if(d.parentNode)d.remove(); },550); }, isErr?6500:8000); }
+  (function(){ try{ var q=new URLSearchParams(location.search);
+    if(q.get('paid')==='1'){ payBanner('✓ Payment received — thank you! Our care team will confirm your appointment shortly.'); history.replaceState({},'',location.pathname); }
+    else if(q.get('canceled')==='1'){ payBanner('Payment canceled — no charge was made. You can try again anytime.', true); history.replaceState({},'',location.pathname); }
+  }catch(e){} })();
   applySettings();
   /* pull live, shared content for every visitor */
   fetch(API+'/api/settings').then(function(r){return r.json();}).then(function(remote){
