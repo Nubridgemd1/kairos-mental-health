@@ -697,20 +697,23 @@ there's grace enough to help you heal, and hope to show you how.</p>
   document.getElementById('yr').textContent=new Date().getFullYear();
 
   /* ---------- logo mark (inline SVG) ---------- */
-  function markSVG(stroke,hill){return '<svg viewBox="0 0 100 100" aria-hidden="true">'+
-    '<defs><clipPath id="kc'+stroke.replace("#","")+'"><circle cx="50" cy="50" r="42.5"/></clipPath></defs>'+
-    '<g clip-path="url(#kc'+stroke.replace("#","")+')">'+
-    '<path d="M6 63 Q33 76 52 65 T94 68 L94 96 L6 96 Z" fill="'+hill+'"/>'+
-    '<path d="M38 60 A12 12 0 0 1 62 60 Z" fill="#C2A15A"/>'+
-    '<g stroke="#C2A15A" stroke-width="2.4" stroke-linecap="round">'+
-    '<line x1="50" y1="43" x2="50" y2="36"/><line x1="40" y1="46" x2="36.5" y2="40.5"/>'+
-    '<line x1="60" y1="46" x2="63.5" y2="40.5"/><line x1="32.5" y1="51.5" x2="28" y2="47.5"/>'+
-    '<line x1="67.5" y1="51.5" x2="72" y2="47.5"/></g></g>'+
-    '<circle cx="50" cy="50" r="42.5" fill="none" stroke="'+stroke+'" stroke-width="4.5"/>'+
-    '<line x1="26" y1="60" x2="74" y2="60" stroke="'+stroke+'" stroke-width="3.2" stroke-linecap="round"/></svg>';}
-  document.getElementById('brandMark').innerHTML=markSVG('#1E2A4A','#5E6B3F');
-  document.getElementById('footMark').innerHTML=markSVG('#FFFFFF','#77854f');
-  (function(){var l=document.createElement('link');l.rel='icon';l.href='data:image/svg+xml,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" rx="20" fill="#1E2A4A"/>'+markSVG('#FFFFFF','#77854f').replace('<svg viewBox="0 0 100 100" aria-hidden="true">','<g transform="translate(8,8) scale(0.84)">').replace('</svg>','</g>')+'</svg>');document.head.appendChild(l);})();
+  /* Kairos emblem — gold "K" figure (person with raised arms) in a gold ring */
+  function markSVG(key){key=(key||'x').replace(/[^a-z0-9]/gi,'');return '<svg viewBox="0 0 100 100" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">'+
+    '<defs>'+
+      '<linearGradient id="kg'+key+'" x1="18" y1="12" x2="84" y2="90" gradientUnits="userSpaceOnUse">'+
+        '<stop offset="0" stop-color="#F6DF97"/><stop offset=".45" stop-color="#D7AE4D"/><stop offset="1" stop-color="#A9801F"/></linearGradient>'+
+      '<linearGradient id="kr'+key+'" x1="12" y1="12" x2="88" y2="88" gradientUnits="userSpaceOnUse">'+
+        '<stop offset="0" stop-color="#EBCB78"/><stop offset=".5" stop-color="#C79A3C"/><stop offset="1" stop-color="#8C6A1E"/></linearGradient>'+
+    '</defs>'+
+    '<path d="M30 88 A43 43 0 1 1 33 87" fill="none" stroke="url(#kr'+key+')" stroke-width="3.4" stroke-linecap="round"/>'+
+    '<circle cx="47" cy="22" r="7.2" fill="url(#kg'+key+')"/>'+
+    '<path d="M47 31 C41 31 37 28 30.5 20.5 C29.5 24 31 27.5 36 31.5 C40 34.5 42.5 37 42.5 42 L42.5 68 C42.5 73 44.5 76 47 77.5 C49.5 76 51.5 73 51.5 68 L51.5 42 C51.5 37 54 34.5 58 31.5 C63 27.5 64.5 24 63.5 20.5 C57 28 53 31 47 31 Z" fill="url(#kg'+key+')"/>'+
+    '<path d="M50 49 L56 46 L72 30 L65.5 27.5 Z" fill="url(#kg'+key+')"/>'+
+    '<path d="M50 52 L57.5 50 L82 76 L73 79.5 Z" fill="url(#kg'+key+')"/>'+
+    '</svg>';}
+  document.getElementById('brandMark').innerHTML=markSVG('h');
+  document.getElementById('footMark').innerHTML=markSVG('f');
+  (function(){var inner=markSVG('fav').replace(/^<svg[^>]*>/,'').replace('</svg>','');var l=document.createElement('link');l.rel='icon';l.href='data:image/svg+xml,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" rx="20" fill="#1E2A4A"/><g transform="translate(8,8) scale(0.84)">'+inner+'</g></svg>');document.head.appendChild(l);})();
 
   /* hero photo reel — admin-managed, flowing happy photos */
   var heroTimer=null;
@@ -942,7 +945,7 @@ there's grace enough to help you heal, and hope to show you how.</p>
   }
 
   /* ---------- chatbot (lead capture) ---------- */
-  document.getElementById('chatMark').innerHTML=markSVG('#FFFFFF','#77854f');
+  document.getElementById('chatMark').innerHTML=markSVG('c');
   var chatId=null, chatMsgs=[], chatLead=null, chatStarted=false, chatSeeded=false;
   var FAQCHIPS=[{k:'services',t:'Services'},{k:'insurance',t:'Insurance'},{k:'tele',t:'Telehealth & states'},{k:'conditions',t:'What we treat'},{k:'book',t:'Book a visit'},{k:'human',t:'Call me'}];
   function toggleChat(){ var w=document.getElementById('chatwin'); var open=w.classList.toggle('open'); document.getElementById('chatfab').classList.toggle('hide',open); if(open&&!chatSeeded){chatSeeded=true; botSay("Hi! I'm the Kairos assistant 👋  I can help with services, insurance, telehealth and booking. To start, could I get your details so our care team can follow up?");} if(open&&chatStarted)setTimeout(function(){var t=document.getElementById('c_text');t&&t.focus();},120); }
