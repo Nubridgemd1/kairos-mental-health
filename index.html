@@ -731,7 +731,7 @@ there's grace enough to help you heal, and hope to show you how.</p>
   var heroTimer=null;
   function renderHero(s){
     var f=document.getElementById('heroReel'); if(!f)return;
-    var H=(s&&s.hero&&s.hero.length)?s.hero:['assets/img/hero1.jpg','assets/img/hero2.jpg','assets/img/hero3.jpg'];
+    var H=(s&&s.hero&&s.hero.length)?s.hero:['assets/img/hero1.jpg','assets/img/hero2.jpg','assets/img/hero3.jpg','assets/img/hero4.jpg'];
     f.innerHTML=H.map(function(src,i){return '<img src="'+String(src).replace(/"/g,'&quot;')+'" alt="A warm moment of care at Kairos" class="'+(i===0?'on':'')+'">';}).join('');
     var imgs=f.querySelectorAll('img'), idx=0;
     if(heroTimer){clearInterval(heroTimer);heroTimer=null;}
@@ -748,7 +748,7 @@ there's grace enough to help you heal, and hope to show you how.</p>
     address:'Dickinson, TX · Secure telehealth & in‑person by appointment', hours:'Mon–Fri · 9:00 AM – 6:00 PM',
     pvName:'Ewoma Cynthia Obaro, PMHNP-BC', pvCred:'Psychiatric Mental Health Nurse Practitioner — Board Certified',
     pvBio:document.getElementById('pvBio').textContent, headshot:'',
-    hero:['assets/img/hero1.jpg','assets/img/hero2.jpg','assets/img/hero3.jpg'],
+    hero:['assets/img/hero1.jpg','assets/img/hero2.jpg','assets/img/hero3.jpg','assets/img/hero4.jpg'],
     states:[['Texas','assets/img/land4.jpg'],['Washington','assets/img/land1.jpg'],['California','assets/img/land3.jpg'],['Florida','assets/img/nature3.jpg'],['Georgia','assets/img/land2.jpg'],['Arizona','assets/img/land1.jpg'],['Colorado','assets/img/land4.jpg'],['New York','assets/img/land3.jpg'],['North Carolina','assets/img/nature3.jpg'],['Virginia','assets/img/land2.jpg']],
     conds:[['Anxiety','Worry, panic & unease','assets/img/land2.jpg'],['Depression','Low mood & loss of joy','assets/img/nature3.jpg'],['ADHD','Focus & attention','assets/img/land1.jpg'],['Bipolar Disorder','Mood highs & lows','assets/img/land4.jpg'],['PTSD & Trauma','Healing from the past','assets/img/land3.jpg'],['OCD','Intrusive thoughts','assets/img/land2.jpg'],['Insomnia','Rest & sleep','assets/img/nature3.jpg'],['Stress & Burnout','Overwhelm & fatigue','assets/img/land1.jpg'],['Grief & Loss','Moving through sorrow','assets/img/land4.jpg'],['Mood Disorders','Steadier days','assets/img/land3.jpg']]
   };
