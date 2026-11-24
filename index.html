@@ -730,7 +730,7 @@
   var heroTimer=null;
   function renderHero(s){
     var f=document.getElementById('heroReel'); if(!f)return;
-    var H=(s&&s.hero&&s.hero.length)?s.hero:['assets/img/hero1.jpg','assets/img/hero2.jpg','assets/img/hero3.jpg','assets/img/hero4.jpg'];
+    var H=(s&&s.hero&&s.hero.length)?s.hero:['assets/img/hero1.jpg','assets/img/hero2.jpg','assets/img/hero3.jpg','assets/img/hero4.jpg','assets/img/hero5.jpg'];
     f.innerHTML=H.map(function(src,i){return '<img src="'+String(src).replace(/"/g,'&quot;')+'" alt="A warm moment of care at Kairos" class="'+(i===0?'on':'')+'">';}).join('');
     var imgs=f.querySelectorAll('img'), idx=0;
     if(heroTimer){clearInterval(heroTimer);heroTimer=null;}
@@ -747,7 +747,7 @@
     address:'Fort Bend, TX · Secure telehealth & in‑person by appointment', hours:'Mon–Fri · 9:00 AM – 6:00 PM',
     pvName:'Ewoma Cynthia Obaro, PMHNP-BC', pvCred:'Psychiatric Mental Health Nurse Practitioner — Board Certified',
     pvBio:document.getElementById('pvBio').textContent, headshot:'',
-    hero:['assets/img/hero1.jpg','assets/img/hero2.jpg','assets/img/hero3.jpg','assets/img/hero4.jpg'],
+    hero:['assets/img/hero1.jpg','assets/img/hero2.jpg','assets/img/hero3.jpg','assets/img/hero4.jpg','assets/img/hero5.jpg'],
     states:[['Texas','assets/img/land4.jpg','live'],['Washington','assets/img/land1.jpg','live'],['California','assets/img/land3.jpg','soon'],['Arizona','assets/img/land1.jpg','soon'],['Oregon','assets/img/land2.jpg','soon']],
     conds:[['Anxiety','Worry, panic & unease','assets/img/cnd1.jpg'],['Depression','Low mood & loss of joy','assets/img/cnd2.jpg'],['ADHD','Focus & attention','assets/img/cnd3.jpg'],['Bipolar Disorder','Mood highs & lows','assets/img/cnd4.jpg'],['PTSD & Trauma','Healing from the past','assets/img/cnd5.jpg'],['OCD','Intrusive thoughts','assets/img/cnd6.jpg'],['Insomnia','Rest & sleep','assets/img/cnd7.jpg'],['Stress & Burnout','Overwhelm & fatigue','assets/img/cnd8.jpg'],['Grief & Loss','Moving through sorrow','assets/img/cnd9.jpg'],['Mood Disorders','Steadier days','assets/img/cnd10.jpg']],
     selfpay:[{id:'eval',label:'Initial Psychiatric Evaluation',desc:'60–90 min · new patients',amount:20000},{id:'followup',label:'Follow‑Up & Medication Management',desc:'25–30 min visit',amount:12000},{id:'therapy',label:'Therapy Session',desc:'50 min',amount:15000}]
