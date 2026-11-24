@@ -824,13 +824,15 @@ there's grace enough to help you heal, and hope to show you how.</p>
     if(on&&hint)hint.style.display='none';
   }
   if(song){ ['play','pause','ended','volumechange'].forEach(function(e){song.addEventListener(e,paintUI);}); song.volume=0.85; song.loop=true; }
-  var GEST=['pointerdown','touchend','click','keydown','scroll'];
-  function cleanupGesture(){ GEST.forEach(function(ev){ document.removeEventListener(ev,firstGesture,true); }); }
-  function unmutePlay(){ if(!song)return; song.muted=false; try{ var p=song.play(); if(p&&p.then)p.then(cleanupGesture).catch(function(){}); }catch(e){} paintUI(); }
+  /* ANY touch / tap / click / key / scroll anywhere on the site starts the song */
+  var GEST=['pointerdown','pointerup','touchstart','touchend','mousedown','mouseup','click','keydown','scroll','wheel'];
+  function cleanupGesture(){ GEST.forEach(function(ev){ document.removeEventListener(ev,firstGesture,true); window.removeEventListener(ev,firstGesture,true); }); }
+  function unmutePlay(){ if(!song)return; song.muted=false; song.volume=0.85; try{ var p=song.play(); if(p&&p.then)p.then(function(){ if(audible())cleanupGesture(); }).catch(function(){}); }catch(e){} paintUI(); }
   function startSong(){ unmutePlay(); }
   function toggleSong(){ if(!song)return; if(song.paused||song.muted){ unmutePlay(); } else { song.pause(); } }
-  function firstGesture(){ unmutePlay(); }   /* first tap/scroll/click anywhere turns on sound */
-  GEST.forEach(function(ev){ document.addEventListener(ev,firstGesture,true); });
+  function firstGesture(){ unmutePlay(); }   /* fires in capture phase, before any button handler */
+  function bindGestures(){ GEST.forEach(function(ev){ var o={capture:true,passive:true}; document.addEventListener(ev,firstGesture,o); window.addEventListener(ev,firstGesture,o); }); }
+  bindGestures();
   /* start the song the moment they arrive — muted autoplay is allowed on all devices; it unmutes on first touch */
   window.addEventListener('load',function(){ if(!song)return; song.muted=true; var p=song.play(); if(p&&p.catch)p.catch(function(){}); setTimeout(function(){ if(song.paused){ try{ song.play(); }catch(e){} } },400); });
 
