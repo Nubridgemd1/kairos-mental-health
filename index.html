@@ -271,6 +271,20 @@
   .photorow label.up{margin:0;background:var(--navy);color:#fff;font-weight:600;font-size:12.5px;padding:9px 12px;border-radius:9px;cursor:pointer;white-space:nowrap}
   .photorow input[type=file]{display:none}
   .admSub{font-weight:700;color:var(--navy);font-family:var(--ff-d);font-size:16px;margin:14px 0 8px}
+  .rstats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:6px 0 10px}
+  .rstat{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 8px;text-align:center}
+  .rstat b{font-family:var(--ff-d);color:var(--navy);font-size:22px;display:block;line-height:1.1}
+  .rstat span{font-size:10px;color:var(--mute);text-transform:uppercase;letter-spacing:.04em}
+  .rchart{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px}
+  .rbars{display:flex;align-items:flex-end;gap:4px;height:92px}
+  .rbar{flex:1;background:var(--olive);border-radius:3px 3px 0 0;min-height:2px}
+  .rbar.hi{background:var(--gold)}
+  .rlabels{display:flex;gap:4px;margin-top:5px}
+  .rlabels span{flex:1;text-align:center;font-size:9px;color:var(--mute)}
+  .leadrow{display:flex;gap:10px;align-items:center;padding:8px 10px;border:1px solid var(--line);border-radius:10px;margin-bottom:6px;background:#fff}
+  .leadrow .src{font-size:10px;font-weight:700;padding:3px 9px;border-radius:20px;white-space:nowrap}
+  .leadrow .src.Chat{background:var(--olive-soft);color:var(--olive)}
+  .leadrow .src.Booking{background:rgba(194,161,90,.2);color:#8a6d1e}
 
   @media(max-width:980px){
     nav.links,.navcta .ph{display:none}.burger{display:flex}
@@ -292,6 +306,7 @@
     .cta .btn{flex:1 1 auto;justify-content:center}
     .rcard{width:220px;height:300px}
     .fplayer .ftx{display:none}
+    .rstats{grid-template-columns:repeat(2,1fr)}
   }
   @media (prefers-reduced-motion: reduce){ .reel-track{animation:none!important} .eq i{animation:none;height:9px} }
 </style>
@@ -599,6 +614,7 @@ there's grace enough to help you heal, and hope to show you how.</p>
         <button data-tab="photos" onclick="adTab('photos')">Reel photos</button>
         <button data-tab="bookings" onclick="adTab('bookings')">Bookings</button>
         <button data-tab="messages" onclick="adTab('messages')">Messages</button>
+        <button data-tab="reports" onclick="adTab('reports')">Reports</button>
         <button data-tab="security" onclick="adTab('security')">Security</button>
       </div>
 
@@ -647,6 +663,18 @@ there's grace enough to help you heal, and hope to show you how.</p>
         <div class="admNote">Visitors who start a chat leave their name, email &amp; phone here, with the conversation.</div>
         <div id="chatsAdmin"><p style="color:var(--mute);font-size:13px">Loading…</p></div>
         <span class="link" onclick="loadChats()">↻ Refresh</span>
+      </div>
+
+      <div class="tabpane" id="tab-reports">
+        <div class="admNote">Live website analytics and lead‑capture report (chat + bookings), updated as people visit.</div>
+        <div class="admSub">Website analytics</div>
+        <div id="anaStats" class="rstats"></div>
+        <div id="anaChart"></div>
+        <div class="admSub" style="margin-top:16px">Lead capture</div>
+        <div id="leadStats" class="rstats"></div>
+        <div id="leadList"></div>
+        <span class="link" onclick="loadReports()">↻ Refresh</span>
+        <div class="msg" id="repMsg"></div>
       </div>
 
       <div class="tabpane" id="tab-security">
@@ -760,6 +788,13 @@ there's grace enough to help you heal, and hope to show you how.</p>
     if(remote&&typeof remote==='object'&&Object.keys(remote).length){ STATE=Object.assign(clone(DEF),remote); cacheLocal(); applySettings(); if(adminOpen&&AUTH_PW)fillPanel(); }
   }).catch(function(){});
 
+  /* lightweight visit tracking (for admin analytics) */
+  (function(){
+    var vid, first=false;
+    try{ vid=localStorage.getItem('kairos_vid'); if(!vid){ vid=Date.now().toString(36)+Math.random().toString(36).slice(2,8); localStorage.setItem('kairos_vid',vid); first=true; } }catch(e){ vid='anon'; }
+    try{ fetch(API+'/api/track',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({vid:vid,first:first})}); }catch(e){}
+  })();
+
   /* ---------- song ---------- */
   var song=document.getElementById('songAudio');
   var fplayer=document.getElementById('fplayer'), fstate=document.getElementById('fstate');
@@ -831,6 +866,7 @@ there's grace enough to help you heal, and hope to show you how.</p>
     document.querySelectorAll('.tabpane').forEach(function(p){p.classList.toggle('active',p.id==='tab-'+t);});
     if(t==='messages')loadChats();
     if(t==='bookings')loadBookings();
+    if(t==='reports')loadReports();
   }
   function flash(id,ok,txt){var m=document.getElementById(id);if(!m)return;m.style.color=ok?'#5E6B3F':'#c0392b';m.textContent=txt;setTimeout(function(){if(m.textContent===txt)m.textContent='';},5000);}
 
@@ -966,6 +1002,27 @@ there's grace enough to help you heal, and hope to show you how.</p>
     }).catch(function(){box.innerHTML='<p style="color:#c0392b;font-size:13px">Offline — could not load bookings.</p>';});
   }
   function delBooking(id){ api('/api/booking-delete',{password:AUTH_PW,id:id}).then(function(){loadBookings();}).catch(function(){}); }
+
+  /* ---------- admin: analytics + lead report ---------- */
+  function rstat(v,l){ return '<div class="rstat"><b>'+v+'</b><span>'+l+'</span></div>'; }
+  function loadReports(){
+    var a=document.getElementById('anaStats'); a.innerHTML=rstat('…','loading');
+    document.getElementById('anaChart').innerHTML=''; document.getElementById('leadStats').innerHTML=''; document.getElementById('leadList').innerHTML='';
+    api('/api/analytics',{password:AUTH_PW}).then(function(j){
+      if(!j.ok){a.innerHTML=rstat('—','unavailable');return;}
+      a.innerHTML=rstat(j.totalViews||0,'Total views')+rstat(j.totalVisitors||0,'Visitors')+rstat((j.today&&j.today.views)||0,'Today')+rstat((j.week&&j.week.views)||0,'Last 7 days');
+      var mx=1; (j.days||[]).forEach(function(d){ if(d.views>mx)mx=d.views; });
+      var bars=(j.days||[]).map(function(d,i){ var h=Math.round((d.views/mx)*100); return '<div class="rbar'+(i===j.days.length-1?' hi':'')+'" style="height:'+Math.max(h,2)+'%" title="'+d.date+': '+d.views+' views, '+d.visitors+' visitors"></div>'; }).join('');
+      var labels=(j.days||[]).map(function(d,i){ return '<span>'+((i%2===1)?d.date.slice(5):'')+'</span>'; }).join('');
+      document.getElementById('anaChart').innerHTML='<div class="rchart"><div class="rbars">'+bars+'</div><div class="rlabels">'+labels+'</div><div style="font-size:11px;color:var(--mute);margin-top:6px">Daily page views — last 14 days</div></div>';
+      var totalLeads=(j.chatLeads||0)+(j.bookings||0);
+      var conv=j.totalVisitors? Math.round((j.bookings/j.totalVisitors)*100):0;
+      document.getElementById('leadStats').innerHTML=rstat(totalLeads,'Total leads')+rstat(j.chatLeads||0,'Chat leads')+rstat(j.bookings||0,'Bookings')+rstat(conv+'%','Visit→book');
+      var ll=document.getElementById('leadList');
+      if(!j.recentLeads||!j.recentLeads.length){ ll.innerHTML='<p style="color:var(--mute);font-size:13px">No leads captured yet. Chat and booking leads will appear here.</p>'; }
+      else ll.innerHTML=j.recentLeads.map(function(L){ var when=''; try{when=new Date(L.at).toLocaleDateString();}catch(e){} return '<div class="leadrow"><span class="src '+(L.source==='Booking'?'Booking':'Chat')+'">'+esc(L.source)+'</span><div style="flex:1;min-width:0"><b style="font-size:14px;color:var(--navy);font-family:var(--ff-d)">'+esc(L.name||'Visitor')+'</b><span style="font-size:12px;color:var(--mute);display:block">'+esc(L.email||'')+' · '+esc(L.phone||'')+' · '+when+'</span></div></div>'; }).join('');
+    }).catch(function(){ a.innerHTML=rstat('—','offline'); });
+  }
 </script>
 </body>
 </html>
