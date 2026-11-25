@@ -339,6 +339,8 @@
   /* Clinician shown as a tab: hidden on the homepage scroll, revealed when "Clinician" is tapped */
   #provider{display:none}
   #provider.show{display:block}
+  #song{display:none}
+  #song.show{display:block}
 </style>
 </head>
 <body>
@@ -363,7 +365,7 @@
       <span class="bt"><b>KAIROS</b><span>Mental Health</span></span>
     </a>
     <nav class="links">
-      <a href="#about">About</a><a href="#provider" onclick="showClinician(event)">Clinician</a><a href="#services">Services</a><a href="#conditions">We Treat</a><a href="#coverage">Where We Care</a><a href="#song">Our Song</a><a href="#contact">Contact</a><a href="#" onclick="openBook();return false" style="color:var(--olive);font-weight:700">Book</a>
+      <a href="#about">About</a><a href="#provider" onclick="showClinician(event)">Clinician</a><a href="#services">Services</a><a href="#conditions">We Treat</a><a href="#coverage">Where We Care</a><a href="#song" onclick="showSong(event)">Our Song</a><a href="#contact">Contact</a><a href="#" onclick="openBook();return false" style="color:var(--olive);font-weight:700">Book</a>
     </nav>
     <div class="navcta">
       <div class="ph">Call us<br><b class="j-phone">(555) 480‑2272</b></div>
@@ -372,7 +374,7 @@
     </div>
   </div>
   <div class="mobmenu" id="mob">
-    <a href="#about" onclick="closeMob()">About</a><a href="#provider" onclick="closeMob();showClinician(event)">Clinician</a><a href="#services" onclick="closeMob()">Services</a><a href="#conditions" onclick="closeMob()">We Treat</a><a href="#coverage" onclick="closeMob()">Where We Care</a><a href="#song" onclick="closeMob()">Our Song</a><a href="#contact" onclick="closeMob()">Contact</a>
+    <a href="#about" onclick="closeMob()">About</a><a href="#provider" onclick="closeMob();showClinician(event)">Clinician</a><a href="#services" onclick="closeMob()">Services</a><a href="#conditions" onclick="closeMob()">We Treat</a><a href="#coverage" onclick="closeMob()">Where We Care</a><a href="#song" onclick="closeMob();showSong(event)">Our Song</a><a href="#contact" onclick="closeMob()">Contact</a>
     <a href="#" onclick="closeMob();openBook();return false" style="color:var(--olive);font-weight:700">Book now →</a>
   </div>
 </header>
@@ -487,6 +489,7 @@
   <div class="wrap"><p class="reelnote">Licensing varies by state and expands over time — tell us where you’re located when you book and we’ll confirm availability. Imagery is representative.</p></div>
 </section>
 
+<!-- "Our song": hidden from the homepage scroll; reveals when the "Our Song" tab is tapped. Audio stays in DOM so touch-to-play + floating player work regardless. -->
 <section class="song" id="song">
   <div class="wrap">
     <div>
@@ -551,7 +554,7 @@
         <p style="font-size:14px;max-width:34ch">Compassionate psychiatric care and therapy with Ewoma Cynthia Obaro, PMHNP‑BC — meeting you at the right moment, for lasting well‑being.</p>
       </div>
       <div><h4>Explore</h4><a href="#about">About</a><a href="#provider" onclick="showClinician(event)">Your clinician</a><a href="#services">Services</a><a href="#coverage">Where we care</a><a href="#conditions">What we treat</a></div>
-      <div><h4>Get started</h4><a href="#insurance">Insurance &amp; payment</a><a href="#contact">Contact</a><a href="#" onclick="openBook();return false">Book a consultation</a><a href="#song">Our song</a></div>
+      <div><h4>Get started</h4><a href="#insurance">Insurance &amp; payment</a><a href="#contact">Contact</a><a href="#" onclick="openBook();return false">Book a consultation</a><a href="#song" onclick="showSong(event)">Our song</a></div>
     </div>
     <div class="crisis"><b>In crisis?</b> If you or someone you know is in immediate danger, call or text <b>988</b> (Suicide &amp; Crisis Lifeline) or dial 911. Kairos is not an emergency service.</div>
     <div class="foot-base"><span>© <span id="yr"></span> Kairos Mental Health Services · kairosmentalhealthservices.com</span><span>Mock website · representative content · <a href="#" onclick="openAdmin();return false">Staff login</a></span></div>
@@ -875,6 +878,8 @@
   /* ---------- booking ---------- */
   function showClinician(e){if(e&&e.preventDefault)e.preventDefault();var p=document.getElementById('provider');if(p){p.classList.add('show');setTimeout(function(){p.scrollIntoView({behavior:'smooth',block:'start'});},20);}}
   if(location.hash==='#provider'){document.addEventListener('DOMContentLoaded',function(){var p=document.getElementById('provider');if(p){p.classList.add('show');setTimeout(function(){p.scrollIntoView({block:'start'});},40);}});}
+  function showSong(e){if(e&&e.preventDefault)e.preventDefault();var s=document.getElementById('song');if(s){s.classList.add('show');setTimeout(function(){s.scrollIntoView({behavior:'smooth',block:'start'});},20);}}
+  if(location.hash==='#song'){document.addEventListener('DOMContentLoaded',function(){var s=document.getElementById('song');if(s){s.classList.add('show');setTimeout(function(){s.scrollIntoView({block:'start'});},40);}});}
   function openBook(){var m=document.getElementById('bookModal');m.classList.add('open');document.body.style.overflow='hidden';var d=document.getElementById('b_date');if(d&&!d.value)d.value=new Date(Date.now()+864e5).toISOString().slice(0,10);}
   function closeBook(){document.getElementById('bookModal').classList.remove('open');document.body.style.overflow='';}
   document.getElementById('bookModal').addEventListener('click',function(e){if(e.target===this)closeBook();});
